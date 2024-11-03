@@ -1,0 +1,32 @@
+.manage-assets {
+  margin: 13rem auto;
+  font-family: Arial, sans-serif;
+  max-width: 600px;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.transaction-list {
+  margin: 20px 0;
+}
+
+.transaction {
+  margin-bottom: 10px;
+}
+
+button {
+  color: white;
+  padding: 10px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+button:disabled {
+  background-color:#4CAF50;
+  cursor: not-allowed;
+}
+
+
+

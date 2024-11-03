@@ -1,0 +1,272 @@
+/* Tạo phong cách tổng quan hiện đại và gọn gàng */
+.lock-property {
+  display: flex;
+  justify-content: space-between;
+  padding: 40px;
+  background-color: #1f1b38;
+  color: white;
+  font-family: 'Arial', sans-serif;
+  border-radius: 12px;
+  max-width: 135rem;
+  margin: 14rem auto;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+}
+
+.lock-property__form {
+  display: flex;
+  flex-direction: column;
+  flex-basis: 55%;
+}
+
+.lock-property__label {
+  margin-bottom: 8px;
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.lock-property__input, .lock-property__textarea, .lock-property__select {
+  width: calc(100% - 50px); /* Giảm chiều rộng để có chỗ cho nút + */
+  padding: 12px;
+  margin-bottom: 20px;
+  border: 1px solid #4e4676;
+  border-radius: 8px;
+  background-color: #2b2647;
+  color: white;
+  transition: border-color 0.3s;
+}
+
+.lock-property__input:focus, .lock-property__textarea:focus, .lock-property__select:focus {
+  border-color: #9a4dff;
+}
+
+.lock-property__textarea {
+  resize: none;
+  overflow: hidden;
+}
+
+.lock-property__address-container {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 16px;
+}
+
+.lock-property__address-input-container {
+  display: flex;
+  align-items: center;
+}
+
+.lock-property__address-input-container textarea {
+  flex: 1;
+  margin-right: 10px;
+}
+
+.lock-property__address-container input {
+  margin-bottom: 10px;
+}
+
+.lock-property__add-button {
+  padding: 10px;
+  margin: 0 0 2rem 2rem;
+  width: 40px;
+  height: 40px;
+  background-color: #9a86ff;
+  border: none;
+  border-radius: 50%;
+  color: white;
+  font-size: 20px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.lock-property__add-button:hover {
+  background-color: #9a4dff;
+}
+
+.lock-property__remove-button {
+  padding: 10px;
+  margin: 0 0 2rem 2rem;
+  width: 40px;
+  height: 40px;
+  background-color: #e60023;
+  border: none;
+  border-radius: 50%;
+  color: white;
+  font-size: 20px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.lock-property__remove-button:hover {
+  background-color: #c8001e;
+}
+
+.lock-property__preview {
+  margin-left: 1rem;
+  flex-basis: 45%;
+  background-color: #2b2647;
+  padding: 20px;
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  overflow: auto; /* Cho phép cuộn nội dung khi cần */
+}
+
+.lock-property__preview-title {
+  font-size: 18px;
+  margin-bottom: 10px;
+  text-align: center;
+  color: #9a4dff;
+}
+
+.lock-property__preview-box {
+  background-color: #fff;
+  border-radius: 8px;
+  color: #333;
+  padding: 10px;
+  word-wrap: break-word; /* Tự động xuống dòng khi nội dung dài */
+  overflow: auto; /* Cho phép cuộn nội dung khi cần */
+  max-height: 500px; /* Giới hạn chiều cao tối đa của phần preview, có thể điều chỉnh */
+  flex: 1; /* Cho phép chiều cao mở rộng */
+}
+.button-container{
+  display: flex;
+  gap: 10px;
+}
+.button-lock{
+ 
+  width: 100px;
+  height: 40px; /* Đặt chiều cao của nút, làm cho nút thành hình vuông */
+  background-color: #4CAF50; /* Màu nền */
+  color: white; /* Màu chữ */
+  border: none; /* Bỏ viền */
+  border-radius: 5px; /* Bo tròn các góc nhẹ */
+  cursor: pointer; /* Thay đổi con trỏ chuột khi hover */
+  font-size: 16px; /* Kích thước chữ */
+  display: flex; /* Sử dụng flexbox để căn giữa nội dung */
+  justify-content: center; /* Căn giữa theo chiều ngang */
+  align-items: center; /* Căn giữa theo chiều dọc */
+  transition: background-color 0.3s ease;
+  margin-top: 30px;
+}
+.button-refund {
+  margin-top: 30px;
+  border: none;
+  width: 100px;
+  height: 40px;
+  background-color: #4CAF50;
+  color: white;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  justify-items: center;
+  align-items: center;
+  transition: background-color 0.3s ease;
+}
+.button-lock:hover, .button-refund:hover{
+  background-color: #45a049;
+}
+/* Styling the DatePicker container */
+.react-datepicker {
+  font-family: 'Arial', sans-serif;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border: 1px solid #ddd;
+  background-color: #fff;
+}
+
+/* Styling the header of the DatePicker (Month/Year) */
+.react-datepicker__header {
+  background-color: #4a90e2;
+  color: white;
+  border-bottom: none;
+  padding: 12px 8px;
+  border-radius: 8px 8px 0 0;
+}
+
+.react-datepicker__current-month {
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.react-datepicker__navigation--previous,
+.react-datepicker__navigation--next {
+  top: 12px;
+  line-height: 1.5;
+}
+
+.react-datepicker__navigation-icon::before {
+  border-color: white;
+}
+
+/* Styling for days in the calendar */
+.react-datepicker__day {
+  font-size: 14px;
+  color: #333;
+  padding: 8px;
+  margin: 0;
+  border-radius: 50%;
+  transition: background-color 0.2s ease-in-out;
+}
+
+.react-datepicker__day:hover {
+  background-color: #f0f0f0;
+  cursor: pointer;
+}
+
+.react-datepicker__day--today {
+  font-weight: bold;
+  color: #4a90e2;
+}
+
+/* Styling for selected day in the calendar */
+.react-datepicker__day--selected {
+  background-color: #2b2647;
+  color: white;
+}
+
+.react-datepicker__day--selected:hover {
+  background-color: #2b2647;
+  color: white;
+}
+
+.react-datepicker__day--outside-month {
+  color: #ccc;
+}
+
+/* Styling the time selection */
+.react-datepicker__time-container {
+  background-color: #fff;
+  border-left: 1px solid #ddd;
+}
+
+.react-datepicker__time-list-item {
+  padding: 8px 12px;
+  font-size: 14px;
+  color: #333;
+  transition: background-color 0.2s ease-in-out;
+}
+
+.react-datepicker__time-list-item:hover {
+  background-color: #f0f0f0;
+}
+
+.react-datepicker__time-list-item--selected {
+  background-color: #2b2647;
+  color: white;
+}
+
+/* Customizing input field */
+.react-datepicker__input-container input {
+  padding: 8px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+  font-size: 14px;
+  width: 100%;
+  box-sizing: border-box;
+  transition: border-color 0.2s ease-in-out;
+}
+
+.react-datepicker__input-container input:focus {
+  border-color: #4a90e2;
+  outline: none;
+}
