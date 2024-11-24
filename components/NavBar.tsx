@@ -9,7 +9,7 @@ const NavBar = () => {
   return (
     <div>
       <div className="header__navbar">
-        <img src="/logo.png" alt="logo" className="header__navbar-logo-image" />
+        <img src="/logox.png" alt="logo" className="header__navbar-logo-image" />
         <div className="header__navbar-navigate">
         
           <Link 

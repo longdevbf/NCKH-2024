@@ -74,8 +74,8 @@ html, body {
 }
 
 .header__navbar-logo-image {
-  width: 100px;
-  height: 100px;
+    width: 200px;
+    height: 60px;
 }
 
 .header__navbar-icon {
