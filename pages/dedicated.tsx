@@ -1,23 +1,44 @@
 import { useState, useRef } from 'react';
-import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
+import { useTransaction } from "../context/TransactionContext";
 
 const LockProperty = () => {
+  const { incrementTransactions } = useTransaction();
   const [amount, setAmount] = useState('');
   const [addresses, setAddresses] = useState<string[]>(['']);
-  const [letter, setLetter] = useState('');
+  const [letters, setLetters] = useState<string[]>(['']);
+  const [nfts, setNfts] = useState<(File | null)[]>([null]);
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
   const [distributeOption, setDistributeOption] = useState<string | null>(null);
   const [values, setValues] = useState<string[]>(['']);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
   const previewAmount = amount === '' ? '' : amount;
-  const previewLetter = letter === '' ? '' : letter;
   const previewCondition = selectedDate ? selectedDate.toLocaleString() : '';
-
+  const previewNft = nfts[0] ? nfts[0]?.name : 'No NFT selected';
+  const handleLock = () => {
+    if (addresses.some(addr => addr.trim() === '')) {
+      alert("Please enter all addresses before locking.");
+      return;
+    }
+  
+    if (distributeOption === 'set' && values.some(val => val.trim() === '')) {
+      alert("Please enter values for all addresses.");
+      return;
+    }
+  
+    if (nfts.some(nft => nft === null)) {
+      alert("Please select an NFT for each address.");
+      return;
+    }
+  
+    incrementTransactions();
+  };
   const handleAddAddress = () => {
     if (addresses.length < 10) {
       setAddresses([...addresses, '']);
+      setLetters([...letters, '']);
+      setNfts([...nfts, null]);
       setValues([...values, '']);
       if (distributeOption === 'equal') {
         const newAmount = parseFloat(amount);
@@ -29,8 +50,12 @@ const LockProperty = () => {
 
   const handleRemoveAddress = (index: number) => {
     const newAddresses = addresses.filter((_, i) => i !== index);
-    setAddresses(newAddresses);
+    const newLetters = letters.filter((_, i) => i !== index);
+    const newNfts = nfts.filter((_, i) => i !== index);
     const newValues = values.filter((_, i) => i !== index);
+    setAddresses(newAddresses);
+    setLetters(newLetters);
+    setNfts(newNfts);
     setValues(newValues);
   };
 
@@ -40,24 +65,21 @@ const LockProperty = () => {
     setAddresses(newAddresses);
   };
 
-  const handleValueChange = (index: number, value: string) => {
-    const newValues = [...values];
-    newValues[index] = value;
-    setValues(newValues);
-  };
-
-  const handleAddressResize = (index: number, e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    handleAddressChange(index, e.target.value);
-    e.target.style.height = 'auto';
-    e.target.style.height = `${e.target.scrollHeight}px`;
-  };
-
-  const handleLetterChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    setLetter(e.target.value);
+  const handleLetterChange = (index: number, e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    const newLetters = [...letters];
+    newLetters[index] = e.target.value;
+    setLetters(newLetters);
     if (textareaRef.current) {
       textareaRef.current.style.height = 'auto';
       textareaRef.current.style.height = `${textareaRef.current.scrollHeight}px`;
     }
+  };
+
+  const handleNftChange = (index: number, e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0] || null;
+    const newNfts = [...nfts];
+    newNfts[index] = file;
+    setNfts(newNfts);
   };
 
   const handleDistributeOptionChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
@@ -72,18 +94,15 @@ const LockProperty = () => {
     }
   };
 
+  const handleValueChange = (index: number, value: string) => {
+    const newValues = [...values];
+    newValues[index] = value;
+    setValues(newValues);
+  };
+
   return (
     <div className="lock-property">
       <div className="lock-property__form">
-        <label className="lock-property__label">Enter the property you want to lock (input: ADA)</label>
-        <input
-          type="number"
-          className="lock-property__input"
-          placeholder="0.00000000"
-          value={amount}
-          onChange={(e) => setAmount(e.target.value)}
-        />
-
         <label className="lock-property__label">Distribute value</label>
         <select
           className="lock-property__select"
@@ -102,68 +121,68 @@ const LockProperty = () => {
                 className="lock-property__textarea"
                 placeholder={`Enter address ${index + 1}`}
                 value={address}
-                onChange={(e) => handleAddressResize(index, e)}
+                onChange={(e) => handleAddressChange(index, e.target.value)}
                 rows={1}
                 style={{ resize: 'none' }}
               />
+
+              {distributeOption === 'set' && (
+                <input
+                  type="number"
+                  className="lock-property__input"
+                  placeholder={`Value for address ${index + 1}`}
+                  value={values[index]}
+                  onChange={(e) => handleValueChange(index, e.target.value)}
+                />
+              )}
+
               {index === 0 && addresses.length < 10 && (
                 <button className="lock-property__add-button" onClick={handleAddAddress}>+</button>
               )}
-              {addresses.length > 1 && (
+              {addresses.length > 1 && index !== 0 && (
                 <button className="lock-property__remove-button" onClick={() => handleRemoveAddress(index)}>-</button>
               )}
             </div>
-            {distributeOption === 'set' && (
-              <input
-                type="number"
-                className="lock-property__input"
-                placeholder={`Value for address ${index + 1}`}
-                value={values[index]}
-                onChange={(e) => handleValueChange(index, e.target.value)}
-              />
-            )}
+
+            <label className="lock-property__label">Enter letter</label>
+            <textarea
+              className="lock-property__textarea"
+              placeholder="Enter letter"
+              value={letters[index]}
+              onChange={(e) => handleLetterChange(index, e)}
+              rows={1}
+            />
+
+            <label className="lock-property__label">Choose NFT</label>
+            <input
+              type="file"
+              className="lock-property__input"
+              accept="image/*"
+              onChange={(e) => handleNftChange(index, e)}
+            />
           </div>
         ))}
 
-        <label className="lock-property__label">Enter letter</label>
-        <textarea
-          ref={textareaRef}
-          className="lock-property__textarea"
-          placeholder="Enter letter"
-          value={letter}
-          onChange={handleLetterChange}
-          rows={1}
-        />
-
-        <label className="lock-property__label">Select Date and Time</label>
-        <DatePicker
-          selected={selectedDate}
-          onChange={(date: Date|null) => setSelectedDate(date)}
-          showTimeSelect
-          dateFormat="Pp"
-          placeholderText="Choose a date and time"
-        />
-
         <div className="button-container">
-          <button className="button-lock">Lock</button>
-          <button className="button-refund">Refund</button>
+          <button className="button-lock" onClick={handleLock}>Lock</button>
         </div>
       </div>
 
       <div className="lock-property__preview">
         <h3 className="lock-property__preview-title">Preview</h3>
         <div className="lock-property__preview-box">
-          <p>Amount: {previewAmount} ADA</p>
           {addresses.map((address, index) => (
             <p key={index}>
               Address {index + 1}: {address === '' ? 'NaN' : address}
               {distributeOption === 'set' && values[index] && (
                 <span> - Value: {values[index]}</span>
               )}
+              <br />
+              Letter: {letters[index]}
+              <br />
+              NFT: {nfts[index] ? nfts[index]?.name : 'No NFT selected'}
             </p>
           ))}
-          <p>Letter: {previewLetter}</p>
-          <p>Condition: {previewCondition}</p>
         </div>
       </div>
     </div>

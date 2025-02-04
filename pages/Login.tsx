@@ -10,7 +10,6 @@ const AuthForm: React.FC = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const router = useRouter();
-  const { pathname } = router;
 
   const toggleForm = () => {
     setIsRegistering(!isRegistering);

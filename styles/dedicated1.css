@@ -1,15 +1,13 @@
-/* Tạo phong cách tổng quan hiện đại và gọn gàng */
 .lock-property {
   display: flex;
   justify-content: space-between;
   padding: 40px;
-  background-color: #1f1b38;
-  color: white;
+  color: black;
   font-family: 'Arial', sans-serif;
   border-radius: 12px;
   max-width: 135rem;
   margin: 14rem auto;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
 }
 
 .lock-property__form {
@@ -22,150 +20,132 @@
   margin-bottom: 8px;
   font-size: 16px;
   font-weight: bold;
+  color: #333;
 }
 
-.lock-property__input, .lock-property__textarea, .lock-property__select {
-  width: calc(100% - 50px); /* Giảm chiều rộng để có chỗ cho nút + */
+.lock-property__input,
+.lock-property__textarea,
+.lock-property__select {
+  width: calc(100% - 50px);
   padding: 12px;
   margin-bottom: 20px;
-  border: 1px solid #4e4676;
+  border: 1px solid #e0e0e0;
   border-radius: 8px;
-  background-color: #2b2647;
-  color: white;
-  transition: border-color 0.3s;
+  background-color: #f4f4f4;
+  color: #333;
+  transition: border-color 0.3s, background-color 0.3s ease;
 }
 
-.lock-property__input:focus, .lock-property__textarea:focus, .lock-property__select:focus {
-  border-color: #9a4dff;
+
+.lock-property__input:focus,
+.lock-property__textarea:focus,
+.lock-property__select:focus {
+  border-color: #4a90e2;
+  background-color: #fff;
 }
 
-.lock-property__textarea {
-  resize: none;
-  overflow: hidden;
-}
-
-.lock-property__address-container {
-  display: flex;
-  flex-direction: column;
-  margin-bottom: 16px;
-}
 
 .lock-property__address-input-container {
   display: flex;
   align-items: center;
+  gap: 10px;
+  position: relative;
 }
 
-.lock-property__address-input-container textarea {
+.lock-property__textarea,
+.lock-property__input {
   flex: 1;
-  margin-right: 10px;
 }
 
-.lock-property__address-container input {
-  margin-bottom: 10px;
-}
-
-.lock-property__add-button {
-  padding: 10px;
-  margin: 0 0 2rem 2rem;
-  width: 40px;
-  height: 40px;
-  background-color: #9a86ff;
-  border: none;
-  border-radius: 50%;
-  color: white;
-  font-size: 20px;
-  cursor: pointer;
-  transition: background-color 0.3s;
-}
-
-.lock-property__add-button:hover {
-  background-color: #9a4dff;
-}
-
+.lock-property__add-button,
 .lock-property__remove-button {
   padding: 10px;
   margin: 0 0 2rem 2rem;
   width: 40px;
   height: 40px;
-  background-color: #e60023;
   border: none;
   border-radius: 50%;
-  color: white;
   font-size: 20px;
   cursor: pointer;
   transition: background-color 0.3s;
+}
+
+.lock-property__add-button {
+  background-color: #61ff4c;
+  color: #000;
+}
+
+.lock-property__add-button:hover {
+  background-color: #49e03e;
+}
+
+.lock-property__remove-button {
+  background-color: #e60023;
+  color: white;
 }
 
 .lock-property__remove-button:hover {
   background-color: #c8001e;
 }
 
+.lock-property__address-input-container:nth-child(n+2) .lock-property__remove-button {
+  visibility: visible;
+}
+
 .lock-property__preview {
-  margin-left: 1rem;
+  margin-top: -4rem;
+  margin-left: 1.5rem;
   flex-basis: 45%;
-  background-color: #2b2647;
+  background-color: #ffffff;
   padding: 20px;
   border-radius: 8px;
   display: flex;
   flex-direction: column;
-  overflow: auto; /* Cho phép cuộn nội dung khi cần */
+  overflow: auto;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 .lock-property__preview-title {
   font-size: 18px;
   margin-bottom: 10px;
   text-align: center;
-  color: #9a4dff;
+  color: #000000;
 }
 
 .lock-property__preview-box {
-  background-color: #fff;
+  background-color: #f7f7f7;
   border-radius: 8px;
   color: #333;
   padding: 10px;
-  word-wrap: break-word; /* Tự động xuống dòng khi nội dung dài */
-  overflow: auto; /* Cho phép cuộn nội dung khi cần */
-  max-height: 500px; /* Giới hạn chiều cao tối đa của phần preview, có thể điều chỉnh */
-  flex: 1; /* Cho phép chiều cao mở rộng */
+  word-wrap: break-word;
+  overflow: auto;
+  max-height: 500px;
+  flex: 1;
 }
-.button-container{
+
+.button-container {
   display: flex;
   gap: 10px;
 }
-.button-lock{
- 
-  width: 100px;
-  height: 40px; /* Đặt chiều cao của nút, làm cho nút thành hình vuông */
-  background-color: #4CAF50; /* Màu nền */
-  color: white; /* Màu chữ */
-  border: none; /* Bỏ viền */
-  border-radius: 5px; /* Bo tròn các góc nhẹ */
-  cursor: pointer; /* Thay đổi con trỏ chuột khi hover */
-  font-size: 16px; /* Kích thước chữ */
-  display: flex; /* Sử dụng flexbox để căn giữa nội dung */
-  justify-content: center; /* Căn giữa theo chiều ngang */
-  align-items: center; /* Căn giữa theo chiều dọc */
-  transition: background-color 0.3s ease;
-  margin-top: 30px;
-}
+
+.button-lock,
 .button-refund {
-  margin-top: 30px;
-  border: none;
   width: 100px;
   height: 40px;
   background-color: #4CAF50;
   color: white;
+  border: none;
   border-radius: 5px;
   cursor: pointer;
   font-size: 16px;
-  justify-items: center;
-  align-items: center;
   transition: background-color 0.3s ease;
 }
-.button-lock:hover, .button-refund:hover{
+
+.button-lock:hover,
+.button-refund:hover {
   background-color: #45a049;
 }
-/* Styling the DatePicker container */
+
 .react-datepicker {
   font-family: 'Arial', sans-serif;
   border-radius: 8px;
@@ -174,7 +154,6 @@
   background-color: #fff;
 }
 
-/* Styling the header of the DatePicker (Month/Year) */
 .react-datepicker__header {
   background-color: #4a90e2;
   color: white;
@@ -198,7 +177,6 @@
   border-color: white;
 }
 
-/* Styling for days in the calendar */
 .react-datepicker__day {
   font-size: 14px;
   color: #333;
@@ -218,7 +196,6 @@
   color: #4a90e2;
 }
 
-/* Styling for selected day in the calendar */
 .react-datepicker__day--selected {
   background-color: #2b2647;
   color: white;
@@ -233,7 +210,6 @@
   color: #ccc;
 }
 
-/* Styling the time selection */
 .react-datepicker__time-container {
   background-color: #fff;
   border-left: 1px solid #ddd;
@@ -255,7 +231,6 @@
   color: white;
 }
 
-/* Customizing input field */
 .react-datepicker__input-container input {
   padding: 8px;
   border-radius: 4px;
