@@ -15,7 +15,7 @@ interface UserContextType {
   clearUserInfo: () => void;
 }
 
-const UserContext = createContext<UserContextType | null>(null); // Khởi tạo context với giá trị mặc định là null
+const UserContext = createContext<UserContextType | null>(null); 
 
 export const useUser = () => {
   const context = useContext(UserContext);

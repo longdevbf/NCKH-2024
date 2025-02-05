@@ -4,16 +4,16 @@ import { useWallet } from "@meshsdk/react";
 import { useRouter } from "next/router";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { useUser } from "../context/UserContext"; // import useUser hook
+import { useUser } from "../context/UserContext";
 
 const NavBar = () => {
   const [showWalletModal, setShowWalletModal] = useState(false);
-  const { userInfo, updateUserInfo, clearUserInfo } = useUser(); // access userInfo and update functions
+  const { userInfo, updateUserInfo, clearUserInfo } = useUser(); 
   const { pathname } = useRouter();
   const { wallet, connect, disconnect } = useWallet();
   const router = useRouter();
 
-  const [isWalletConnected, setIsWalletConnected] = useState(false); // Add this line
+  const [isWalletConnected, setIsWalletConnected] = useState(false); 
 
 
   useEffect(() => {

@@ -2,7 +2,13 @@ import { useState, useEffect, useRef } from "react";
 import type { NextPage } from "next";
 import styles from '../styles/Home.module.css';
 import { useWallet } from "@meshsdk/react";
-import { Player } from '@lottiefiles/react-lottie-player';
+import dynamic from 'next/dynamic';
+
+// Import Player dynamically to disable SSR (Server-Side Rendering)
+const Player = dynamic(
+  () => import("@lottiefiles/react-lottie-player").then((mod) => mod.Player),
+  { ssr: false }
+);
 
 const Home: NextPage = () => {
   const [assets, setAssets] = useState<null | any>(null);
@@ -10,7 +16,6 @@ const Home: NextPage = () => {
   const [fadeIn, setFadeIn] = useState<boolean>(false);
   const [effectInitialized, setEffectInitialized] = useState<boolean>(false);
   const { wallet, connected } = useWallet();
-  const headerRef = useRef<boolean>(false);
 
   useEffect(() => {
     const isLoaded = sessionStorage.getItem('hasLoadedOnce');
@@ -44,7 +49,6 @@ const Home: NextPage = () => {
 
   const Header = () => {
     useEffect(() => {
-
       const strings = [
         'Welcome to HeritageChain The Future of Technology Is Here',
         'Preserving Personal Legacies Through Blockchain Technology',

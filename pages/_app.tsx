@@ -8,7 +8,7 @@ import "../styles/globals.css";
 import Layout from "../components/Layout";
 import { useRouter } from "next/router";
 import { TransactionProvider } from "../context/TransactionContext";
-import { UserProvider } from "../context/UserContext"; // Import UserProvider
+import { UserProvider } from "../context/UserContext"; 
 
 function MyApp({ Component, pageProps }: AppProps) {
   const router = useRouter();
