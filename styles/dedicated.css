@@ -1,3 +1,4 @@
+/* Lock Property Container */
 .lock-property {
   display: flex;
   justify-content: space-between;
@@ -10,12 +11,14 @@
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
 }
 
+/* Lock Property Form */
 .lock-property__form {
   display: flex;
   flex-direction: column;
   flex-basis: 55%;
 }
 
+/* Label Styling */
 .lock-property__label {
   margin-bottom: 8px;
   font-size: 16px;
@@ -23,6 +26,7 @@
   color: #333;
 }
 
+/* Input, Textarea, Select Styling */
 .lock-property__input,
 .lock-property__textarea,
 .lock-property__select {
@@ -36,7 +40,6 @@
   transition: border-color 0.3s, background-color 0.3s ease;
 }
 
-
 .lock-property__input:focus,
 .lock-property__textarea:focus,
 .lock-property__select:focus {
@@ -44,7 +47,7 @@
   background-color: #fff;
 }
 
-
+/* Address Input Container */
 .lock-property__address-input-container {
   display: flex;
   align-items: center;
@@ -52,11 +55,13 @@
   position: relative;
 }
 
+/* Address Input and Textarea Styling */
 .lock-property__textarea,
 .lock-property__input {
   flex: 1;
 }
 
+/* Add and Remove Button Styling */
 .lock-property__add-button,
 .lock-property__remove-button {
   padding: 10px;
@@ -88,10 +93,12 @@
   background-color: #c8001e;
 }
 
+/* Remove Button Visibility for Additional Addresses */
 .lock-property__address-input-container:nth-child(n+2) .lock-property__remove-button {
   visibility: visible;
 }
 
+/* Preview Box Styling */
 .lock-property__preview {
   margin-top: -4rem;
   margin-left: 1.5rem;
@@ -105,6 +112,7 @@
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
+/* Preview Title Styling */
 .lock-property__preview-title {
   font-size: 18px;
   margin-bottom: 10px;
@@ -112,6 +120,7 @@
   color: #000000;
 }
 
+/* Preview Box Content Styling */
 .lock-property__preview-box {
   background-color: #f7f7f7;
   border-radius: 8px;
@@ -123,11 +132,13 @@
   flex: 1;
 }
 
+/* Button Container */
 .button-container {
   display: flex;
   gap: 10px;
 }
 
+/* Lock and Refund Button Styling */
 .button-lock,
 .button-refund {
   width: 100px;
@@ -146,6 +157,7 @@
   background-color: #45a049;
 }
 
+/* React DatePicker Styling */
 .react-datepicker {
   font-family: 'Arial', sans-serif;
   border-radius: 8px;
@@ -154,6 +166,7 @@
   background-color: #fff;
 }
 
+/* Datepicker Header Styling */
 .react-datepicker__header {
   background-color: #4a90e2;
   color: white;
@@ -162,11 +175,13 @@
   border-radius: 8px 8px 0 0;
 }
 
+/* Current Month Styling */
 .react-datepicker__current-month {
   font-size: 16px;
   font-weight: bold;
 }
 
+/* Navigation Arrow Styling */
 .react-datepicker__navigation--previous,
 .react-datepicker__navigation--next {
   top: 12px;
@@ -177,6 +192,7 @@
   border-color: white;
 }
 
+/* Day Styling */
 .react-datepicker__day {
   font-size: 14px;
   color: #333;
@@ -206,15 +222,18 @@
   color: white;
 }
 
+/* Outside Month Day Styling */
 .react-datepicker__day--outside-month {
   color: #ccc;
 }
 
+/* Time Container Styling */
 .react-datepicker__time-container {
   background-color: #fff;
   border-left: 1px solid #ddd;
 }
 
+/* Time List Item Styling */
 .react-datepicker__time-list-item {
   padding: 8px 12px;
   font-size: 14px;
@@ -226,11 +245,13 @@
   background-color: #f0f0f0;
 }
 
+/* Selected Time List Item Styling */
 .react-datepicker__time-list-item--selected {
   background-color: #2b2647;
   color: white;
 }
 
+/* DatePicker Input Styling */
 .react-datepicker__input-container input {
   padding: 8px;
   border-radius: 4px;

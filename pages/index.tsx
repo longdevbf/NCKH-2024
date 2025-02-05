@@ -3,20 +3,16 @@ import type { NextPage } from "next";
 import styles from '../styles/Home.module.css';
 import { useWallet } from "@meshsdk/react";
 import dynamic from 'next/dynamic';
-
-// Import Player dynamically to disable SSR (Server-Side Rendering)
 const Player = dynamic(
   () => import("@lottiefiles/react-lottie-player").then((mod) => mod.Player),
   { ssr: false }
 );
-
 const Home: NextPage = () => {
   const [assets, setAssets] = useState<null | any>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [fadeIn, setFadeIn] = useState<boolean>(false);
   const [effectInitialized, setEffectInitialized] = useState<boolean>(false);
   const { wallet, connected } = useWallet();
-
   useEffect(() => {
     const isLoaded = sessionStorage.getItem('hasLoadedOnce');
     if (!isLoaded) {
@@ -31,7 +27,6 @@ const Home: NextPage = () => {
       setFadeIn(true);
     }
   }, []);
-
   useEffect(() => {
     if (connected) {
       getAssets();

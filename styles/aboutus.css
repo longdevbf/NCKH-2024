@@ -135,6 +135,7 @@
   .our-team__members {
     justify-content: space-between;
   }
+
   .our-team__member {
     flex: 0 0 48%;
   }
@@ -144,12 +145,15 @@
   .about-hc-text {
     margin: 1rem 2rem;
   }
+
   .about-us {
     margin: -2rem 2rem 10rem 0;
   }
+
   .our-team {
     margin-top: 5rem;
   }
+
   .about-hc {
     height: 65rem;
   }

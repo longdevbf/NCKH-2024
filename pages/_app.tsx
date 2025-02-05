@@ -1,8 +1,12 @@
 import type { AppProps } from "next/app";
 import { MeshProvider } from "@meshsdk/react";
-import "../styles/main.css";
+import "../styles/wallet.css";
+import "../styles/index.css";
+import "../styles/footer.css";
+import "../styles/loading.css";
+import "../styles/navbar.css";
 import "../styles/aboutus.css";
-import "../styles/dedicated1.css";
+import "../styles/dedicated.css";
 import "../styles/user.css";
 import "../styles/globals.css";
 import Layout from "../components/Layout";
