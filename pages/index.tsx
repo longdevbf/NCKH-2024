@@ -1,18 +1,22 @@
 import { useState, useEffect, useRef } from "react";
 import type { NextPage } from "next";
 import styles from '../styles/Home.module.css';
-import { useWallet } from "@meshsdk/react";
+import { useWallet, CardanoWallet } from "@meshsdk/react";
 import dynamic from 'next/dynamic';
 const Player = dynamic(
   () => import("@lottiefiles/react-lottie-player").then((mod) => mod.Player),
   { ssr: false }
 );
+export const useWalletContext = () => {
+    const { wallet, connected } = useWallet();
+    return { wallet, connected };
+  };
 const Home: NextPage = () => {
   const [assets, setAssets] = useState<null | any>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [fadeIn, setFadeIn] = useState<boolean>(false);
   const [effectInitialized, setEffectInitialized] = useState<boolean>(false);
-  const { wallet, connected } = useWallet();
+  const {wallet, connected} = useWalletContext();
   useEffect(() => {
     const isLoaded = sessionStorage.getItem('hasLoadedOnce');
     if (!isLoaded) {

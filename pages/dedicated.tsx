@@ -1,7 +1,10 @@
 import { useState, useRef } from 'react';
 import 'react-datepicker/dist/react-datepicker.css';
 import { useTransaction } from "../context/TransactionContext";
-
+import { useWallet, CardanoWallet } from "@meshsdk/react";
+import { lock } from '../mesh/functionDepositWithMesh';
+import { unlock } from "../mesh/functionWithDrawMesh";
+import { useWalletContext } from './index';
 const LockProperty = () => {
   const { incrementTransactions } = useTransaction();
   const [amount, setAmount] = useState('');
@@ -16,24 +19,35 @@ const LockProperty = () => {
   const previewAmount = amount === '' ? '' : amount;
   const previewCondition = selectedDate ? selectedDate.toLocaleString() : '';
   const previewNft = nfts[0] ? nfts[0]?.name : 'No NFT selected';
-  const handleLock = () => {
+
+  const handleLock = async () => {
     if (addresses.some(addr => addr.trim() === '')) {
       alert("Please enter all addresses before locking.");
       return;
     }
-  
+
     if (distributeOption === 'set' && values.some(val => val.trim() === '')) {
       alert("Please enter values for all addresses.");
       return;
     }
-  
-    if (nfts.some(nft => nft === null)) {
-      alert("Please select an NFT for each address.");
-      return;
+
+    // if (nfts.some(nft => nft === null)) {
+    //   alert("Please select an NFT for each address.");
+    //   return;
+    // }
+
+    try {
+      const {wallet, connected} = useWalletContext(); // Lấy thông tin ví từ hook useWallet
+      for (let i = 0; i < addresses.length; i++) {
+        const assets = [{ unit: "lovelace", quantity: parseFloat(values[i]).toString() }];
+        await lock(addresses[i], assets, wallet); // Gọi hàm lock với địa chỉ, tài sản và ví
+      }
+      incrementTransactions();
+    } catch (error) {
+      console.error("Error locking assets:", error);
     }
-  
-    incrementTransactions();
   };
+
   const handleAddAddress = () => {
     if (addresses.length < 10) {
       setAddresses([...addresses, '']);
@@ -101,6 +115,7 @@ const LockProperty = () => {
   };
 
   return (
+
     <div className="lock-property">
       <div className="lock-property__form">
         <label className="lock-property__label">Distribute value</label>
