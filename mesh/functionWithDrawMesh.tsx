@@ -78,10 +78,10 @@ import {
      // console.log("Datum:", datum);
   
       const invalidBefore = 
-        unixTimeToEnclosingSlot(
+        Math.max(unixTimeToEnclosingSlot(
           Math.min(datum.fields[0].int as number, Date.now()),
           SLOT_CONFIG_NETWORK.preprod,
-        ) + 1;
+        ) + 1, 0);
   
       const txBuilder = new MeshTxBuilder({
         fetcher: blockchainProvider,
@@ -130,7 +130,7 @@ import {
   
   
       const txhash = await wallet.submitTx(signedTx);
-  
+      return txhash;
    
   }
   

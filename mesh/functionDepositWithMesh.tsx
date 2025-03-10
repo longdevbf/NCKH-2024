@@ -15,10 +15,7 @@ import {
     getWalletInfoForTx,
   } from "./common";
   import { CardanoWallet, useWallet } from "@meshsdk/react";
-  export async function lock(beneficiary: string, assets: Asset[], wallet: any) {
-
-
-  
+  export async function lock(beneficiary: string, assets: Asset[], wallet: any, lockUntilTimeStamp: number) {
   
     const { scriptAddr, scriptCbor } = getScript();
     const value = MeshValue.fromAssets(assets);
@@ -39,7 +36,7 @@ import {
     //   networkId: 0,
     // });
   
-    const lockUntilTimeStamp = new Date().getMinutes() + 1;
+
 
   
     
@@ -73,10 +70,9 @@ import {
     const signedTx = await wallet.signTx(unsignedTx);
 
     const txHash = await wallet.submitTx(signedTx);
-
-    console.log("txhash: " + txHash);
-
-    console.log("Khoa");
+    
+    return txHash;
   }
+
 
   
