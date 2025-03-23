@@ -29,8 +29,24 @@ export async function lock(beneficiary: string, assets: Asset[], wallet: any, lo
     // Lấy thông tin script
     const { scriptAddr, scriptCbor } = getScript();
     
+    // Chuyển đổi ADA sang lovelace (1 ADA = 1,000,000 lovelace)
+    const convertedAssets = assets.map(asset => {
+      if (asset.unit === "lovelace") {
+        // Chuyển đổi từ ADA sang lovelace bằng cách nhân với 1,000,000
+        const lovelaceAmount = (parseFloat(asset.quantity) * 1000000).toString();
+        return {
+          ...asset,
+          quantity: lovelaceAmount
+        };
+      }
+      return asset;
+    });
+    
+    console.log("Original assets:", assets);
+    console.log("Converted assets:", convertedAssets);
+    
     // Chuyển đổi assets thành value cho giao dịch
-    const value = MeshValue.fromAssets(assets);
+    const value = MeshValue.fromAssets(convertedAssets);
     
     // Tạo transaction builder
     const txBuilder = new MeshTxBuilder({
@@ -51,34 +67,22 @@ export async function lock(beneficiary: string, assets: Asset[], wallet: any, lo
     }
     
     // Kiểm tra thời gian khóa phải nằm trong tương lai
-    const currentTime = Math.floor(Date.now() / 1000);
-    if (lockUntilTimeStamp <= currentTime) {
-      throw new Error("Lock time must be in the future");
-    }
+    // const currentTime = Math.floor(Date.now() / 1000);
+    // if (lockUntilTimeStamp <= currentTime) {
+    //   throw new Error("Lock time must be in the future");
+    // }
     
     // Định nghĩa cấu trúc datum lưu trữ thông tin khóa
     // Format: [lockUntilTimeStamp, ownerPubKeyHash, beneficiaryPubKeyHash]
     const datum = mConStr0([lockUntilTimeStamp, ownerPubKeyHash, beneficiaryPubKeyHash]);
     
-    // Tạo nội dung metadata chi tiết hơn
-    const metadata = {
-      action: 'lock_assets',
-      owner: walletAddress,
-      beneficiary: beneficiary,
-      lockUntil: lockUntilTimeStamp,
-      lockUntilFormatted: new Date(lockUntilTimeStamp * 1000).toISOString(),
-      assets: assets.map(asset => ({
-        unit: asset.unit,
-        quantity: asset.quantity
-      })),
-      timestamp: currentTime
-    };
+    
 
     // Xây dựng giao dịch
     await txBuilder
-      .txOut(scriptAddr, assets)
+      .txOut(scriptAddr, convertedAssets)  // Sử dụng convertedAssets thay vì assets
       .txOutInlineDatumValue(datum)
-      .metadataValue('674', "")  // Sử dụng metadata chi tiết hơn
+      .metadataValue('674', "")  // Sử dụng metadata chi tiết
       .changeAddress(walletAddress)
       .selectUtxosFrom(utxos)
       .complete();

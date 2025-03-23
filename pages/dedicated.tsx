@@ -150,7 +150,7 @@ const LockProperty = () => {
       setTxHash(null); // Reset txHash trước khi thực hiện giao dịch mới
       setTransactionSuccess(false); // Reset trạng thái giao dịch thành công
       
-      const lockUntilTimeStamp = Math.floor(lockUntil.getTime() / 1000); // Chuyển đổi thành timestamp (seconds)
+      const lockUntilTimeStamp = lockUntil.getTime(); // Chuyển đổi thành timestamp (seconds)
       
       // Tạo danh sách assets bắt đầu với ADA
       const assets = [{ unit: "lovelace", quantity: parseFloat(amount).toString() }];
@@ -232,7 +232,7 @@ const LockProperty = () => {
             onChange={(date: Date | null) => setLockUntil(date)}
             showTimeSelect
             timeFormat="HH:mm"
-            timeIntervals={15}
+            timeIntervals={1}
             timeCaption="Time"
             dateFormat="MMMM d, yyyy h:mm aa"
             className="lock-property__input"
