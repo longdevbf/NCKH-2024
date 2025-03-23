@@ -96,7 +96,7 @@ button:hover .login__button {
     text-align: center;
     border: 0.2rem solid #1981ff;
     transition: background 0.3s ease;
-    margin-left: auto;
+    margin-left: 0px;
 }
 
 .header__navbar-login:hover {
@@ -104,7 +104,17 @@ button:hover .login__button {
     color: #1981ff;
 }
 
-@media(max-width: 600px) {
+.header__navbar-navigate {
+    display: flex;
+    align-items: center;
+    justify-content: center; /* Căn giữa theo chiều ngang */
+    margin-left: auto; /* Đẩy về bên phải nếu cần */
+  }
+  .header__navbar-login{
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+  @media(max-width: 600px) {
 
     .header__navbar,
     .header__navbar-icon {

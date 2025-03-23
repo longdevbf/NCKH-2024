@@ -7,6 +7,23 @@ import { useWalletContext } from './index';
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
+const saveActivity = (
+  type: 'lock' | 'unlock',
+  walletAddress: string,
+  timestamp: string
+) => {
+  const activities = JSON.parse(localStorage.getItem('activities') || '[]');
+
+  const newActivity = {
+    type,
+    walletAddress,
+    timestamp,
+  };
+
+  activities.unshift(newActivity);
+  localStorage.setItem('activities', JSON.stringify(activities));
+};
+
 const DedicatedPage = () => {
   // State để kiểm soát hiển thị tab nào (Lock hoặc Unlock)
   const [activeTab, setActiveTab] = useState<'lock' | 'unlock'>('lock');
@@ -31,6 +48,7 @@ const DedicatedPage = () => {
     fontWeight: isActive ? 'bold' : 'normal',
   });
 
+  
   return (
     <div className="dedicated-page" style={{ maxWidth: '1200px', margin: '0 auto', padding: '20px' }}>
       {/* Hiển thị nội dung tab */}
@@ -56,6 +74,7 @@ const DedicatedPage = () => {
     </div>
   );
 };
+
 
 const LockProperty = () => {
   const { incrementTransactions } = useTransaction();
@@ -152,6 +171,9 @@ const LockProperty = () => {
       // Gọi incrementTransactions để cập nhật số lượng giao dịch
       incrementTransactions();
       
+      const walletAddress = (await wallet.getUsedAddresses())[0];
+      const timestamp = new Date().toISOString();
+      saveActivity('lock', walletAddress, timestamp);
       // Hiển thị thông báo thành công nhưng không xóa dữ liệu
       alert("Assets locked successfully!");
       
@@ -384,9 +406,12 @@ const UnlockProperty = () => {
       
       // Cập nhật số lượng giao dịch
       incrementTransactions();
-      
+      const walletAddress = (await wallet.getUsedAddresses())[0];
+      const timestamp = new Date().toISOString();
+      saveActivity('unlock', walletAddress, timestamp);
       // Hiển thị thông báo thành công nhưng không xóa dữ liệu
       alert("Assets unlocked successfully!");
+
       
     } catch (error) {
       console.error("Error unlocking assets:", error);

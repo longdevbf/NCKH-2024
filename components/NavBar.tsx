@@ -8,19 +8,17 @@ import { useUser } from "../context/UserContext";
 
 const NavBar = () => {
   const [showWalletModal, setShowWalletModal] = useState(false);
+  const [showWalletInfo, setShowWalletInfo] = useState(false); // State cho modal thông tin ví
   const { userInfo, updateUserInfo, clearUserInfo } = useUser(); 
   const { pathname } = useRouter();
   const { wallet, connect, disconnect } = useWallet();
   const router = useRouter();
 
-  const [isWalletConnected, setIsWalletConnected] = useState(false); 
-
-
   useEffect(() => {
-    if (userInfo.address) {
-      setIsWalletConnected(true);
+    if (wallet) {
+      fetchWalletData();
     }
-  }, [userInfo]);
+  }, [wallet]);
 
   const fetchWalletData = async () => {
     if (wallet) {
@@ -33,35 +31,29 @@ const NavBar = () => {
         );
         const balance = (Number(totalLovelace) / 1_000_000).toFixed(3) + " ADA";
 
-        // Update user information using context
-        updateUserInfo({
-          address,
-          balance,
-          stakingAddress: "", // Update with your staking address logic
-          transactions: 0, // Set transaction count if needed
-        });
-
-        router.push("/user");
+        updateUserInfo({ address, balance });
       } catch (error) {
         console.error("Error fetching wallet data:", error);
       }
     }
   };
 
-  useEffect(() => {
-    if (wallet) {
-      fetchWalletData();
-    }
-  }, [wallet]);
-
   const handleConnect = async (walletType: string) => {
     await connect(walletType);
     setShowWalletModal(false);
   };
 
+  const handleDisconnect = () => {
+    disconnect();
+    clearUserInfo();
+    setShowWalletInfo(false); // Đóng form khi đăng xuất
+    router.push("/");
+  };
+
   return (
     <div>
-      <ToastContainer position="top-right" autoClose={3000} hideProgressBar={false} />
+      <ToastContainer position="top-right" autoClose={3000} />
+
       <div className="header__navbar">
         <img src="/logox.png" alt="logo" className="header__navbar-logo-image" />
         <div className="header__navbar-navigate">
@@ -71,20 +63,7 @@ const NavBar = () => {
           <Link href="/dedicated" className={`header__navbar-navigate--page ${pathname === "/dedicated" ? "active" : ""}`} onClick={(e) => {
             if (!userInfo.address) {
               e.preventDefault();
-              toast.warning(" Vui lòng kết nối ví trước khi truy cập Dedicated!", {
-                position: "top-right",
-                autoClose: 3000,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                theme: "colored",
-                style: {
-                  fontSize: '1.5rem',
-                  width: '45rem',
-                  height: '5rem',
-                },
-              });
+              toast.warning("Vui lòng kết nối ví trước khi truy cập Dedicated!");
             }
           }}>
             Dedicated
@@ -92,36 +71,19 @@ const NavBar = () => {
           <Link href="/user" className={`header__navbar-navigate--page ${pathname === "/user" ? "active" : ""}`} onClick={(e) => {
             if (!userInfo.address) {
               e.preventDefault();
-              toast.warning(" Vui lòng kết nối ví trước khi truy cập User!", {
-                position: "top-right",
-                autoClose: 3000,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                theme: "colored",
-                style: {
-                  fontSize: '1.5rem',
-                  width: '45rem',
-                  height: '5rem',
-                },
-              });
+              toast.warning("Vui lòng kết nối ví trước khi truy cập User!");
             }
-          }}>
-            User
-          </Link>
-          <Link href="/about" className={`header__navbar-navigate--page ${pathname === "/about" ? "active" : ""}`}>
-            About Us
-          </Link>
+          }}>User</Link>
+          <Link href="/about" className={`header__navbar-navigate--page ${pathname === "/about" ? "active" : ""}`}>About Us</Link>
         </div>
+
         {userInfo.address ? (
-          <div className="wallet-info">
-            <span className="wallet-balance">{userInfo.balance}</span>
-            <span className="wallet-address">{userInfo.address.slice(0, 6)}...{userInfo.address.slice(-6)}</span>
-            <button className="header__navbar-logout" onClick={() => { router.push("/"); disconnect(); clearUserInfo(); }}>
-              Disconnect
-            </button>
-          </div>
+          <button className="wallet-info" onClick={() => setShowWalletInfo(true)}>
+            
+              <span className="wallet-address">{userInfo.address.slice(0, 6)}...{userInfo.address.slice(-8)}</span>
+              <span className="wallet-balance">{userInfo.balance}</span>
+           
+          </button>
         ) : (
           <button className="header__navbar-login" onClick={() => setShowWalletModal(true)}>
             Connect Wallet
@@ -129,6 +91,7 @@ const NavBar = () => {
         )}
       </div>
 
+      {/* Modal kết nối ví */}
       {showWalletModal && !userInfo.address && (
         <div className="connect-wallet-container">
           <div className="overlay" onClick={() => setShowWalletModal(false)}></div>
@@ -143,6 +106,19 @@ const NavBar = () => {
               <img style={{ width: '28px', height: '28px', marginRight: '15px' }} src="https://play-lh.googleusercontent.com/UlhGKCVtUuXjDDF_fFdDQaF7mdUpMpsKvfQNNQHuwzbNEvvN-sYRNLk308wpWmLQkR4" alt="Yoroi" className="wallet-logo" />
               <p className="connect-text">Connect with Yoroi</p>
             </button>
+          </div>
+        </div>
+      )}
+
+      {/* Modal hiển thị thông tin ví */}
+      {showWalletInfo && (
+        <div className="wallet-info-modal">
+          <div className="wallet-info-content">
+            <button className="close-button" onClick={() => setShowWalletInfo(false)}>X</button>
+            <h3>Wallet Information</h3>
+            <p><strong>Address:</strong> {userInfo.address}</p>
+            <p><strong>Balance:</strong> {userInfo.balance}</p>
+            <button className="disconnect-button" onClick={handleDisconnect}>Disconnect</button>
           </div>
         </div>
       )}

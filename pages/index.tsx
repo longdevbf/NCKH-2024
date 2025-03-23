@@ -1,22 +1,28 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import type { NextPage } from "next";
 import styles from '../styles/Home.module.css';
 import { useWallet, CardanoWallet } from "@meshsdk/react";
 import dynamic from 'next/dynamic';
+import styled from 'styled-components';
+
 const Player = dynamic(
   () => import("@lottiefiles/react-lottie-player").then((mod) => mod.Player),
   { ssr: false }
 );
+
 export const useWalletContext = () => {
     const { wallet, connected } = useWallet();
     return { wallet, connected };
-  };
+};
+
 const Home: NextPage = () => {
   const [assets, setAssets] = useState<null | any>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [fadeIn, setFadeIn] = useState<boolean>(false);
   const [effectInitialized, setEffectInitialized] = useState<boolean>(false);
-  const {wallet, connected} = useWalletContext();
+  const [showWalletInfo, setShowWalletInfo] = useState<boolean>(false); // state for showing wallet info
+  const { wallet, connected } = useWalletContext();
+
   useEffect(() => {
     const isLoaded = sessionStorage.getItem('hasLoadedOnce');
     if (!isLoaded) {
@@ -31,6 +37,7 @@ const Home: NextPage = () => {
       setFadeIn(true);
     }
   }, []);
+
   useEffect(() => {
     if (connected) {
       getAssets();
@@ -44,6 +51,10 @@ const Home: NextPage = () => {
       setAssets(_assets);
       setLoading(false);
     }
+  };
+
+  const handleWalletBalanceClick = () => {
+    setShowWalletInfo(!showWalletInfo); // Toggle the visibility of wallet info
   };
 
   const Header = () => {
@@ -123,6 +134,15 @@ const Home: NextPage = () => {
             />
           </div>
         </div>
+        <div className="wallet-balance" onClick={handleWalletBalanceClick}>
+          <span>Wallet Balance</span>
+        </div>
+        {showWalletInfo && wallet && (
+          <div className="wallet-info">
+            <p>Wallet Address: {wallet?.address}</p>
+            <button onClick={() => console.log("Log out logic here")}>Log out</button>
+          </div>
+        )}
       </header>
     );
   };

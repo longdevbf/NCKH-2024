@@ -96,7 +96,7 @@ button:hover .login__button {
     text-align: center;
     border: 0.2rem solid #1981ff;
     transition: background 0.3s ease;
-    margin-left: auto;
+    margin-left: 0px;
 }
 
 .header__navbar-login:hover {
@@ -104,20 +104,337 @@ button:hover .login__button {
     color: #1981ff;
 }
 
+
+.close-button {
+    background-color: #ff3b30;
+    padding: 8px 12px;
+    border: none;
+    border-radius: 50%;
+    color: white;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: absolute;
+    right: 15px;
+    top: 15px;
+    font-weight: bold;
+    font-size: 16px;
+    width: 35px;
+    height: 35px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  }
+  
+  .close-button:hover {
+    background-color: #d9362d;
+    transform: scale(1.1);
+  }
+  
+  .connect-wallet-modal {
+    position: absolute;
+    top: 13%; /* Moved higher on the screen (from 50% to 25%) */
+    right: 30px;
+    transform: translateY(0); /* Removed Y transform since we want it at exact top position */
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+    padding: 25px;
+    z-index: 1000;
+    min-width: 300px;
+    position: absolute;
+  }
+  
+  .modal-title {
+    font-size: 24px;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 15px; /* Reduced bottom margin */
+    text-align: center;
+    padding-bottom: 10px;
+    border-bottom: 2px solid #f0f0f0;
+    background: linear-gradient(to right, #4a90e2, #63b3ed);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    letter-spacing: 0.5px;
+  }
+  
+  .wallet-option {
+    height: 70px;
+    width: 220px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between; /* Changed to space between for logo and connect text */
+    text-align: left;
+    margin: 12px auto;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    transition: all 0.3s ease;
+    padding: 12px 15px;
+    background-color: #f9fafb;
+    border: 1px solid #edf2f7;
+    margin-top: 20px;
+  }
+  
+  .wallet-option:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+    background-color: #f0f7ff;
+    border-color: #d0e3ff;
+  }
+  
+  .wallet-info {
+    display: flex;
+    align-items: center;
+    background-color: #000;
+  }
+  .wallet-address{
+    width: 30%;
+  }
+  
+  .wallet-logo {
+    width: 40px;
+    height: 40px;
+    margin-right: 15px;
+    object-fit: contain;
+    border-radius: 8px;
+  }
+  
+  .wallet-name {
+    font-weight: 600;
+    font-size: 16px;
+    color: #2d3748;
+  }
+  
+  .connect-text {
+    font-size: 14px;
+    color: #4a90e2;
+    font-weight: 500;
+    margin-bottom: 20px;
+  }
+  .wallet-info{
+    display: block;
+  }
+  .wallet-address{
+    display: block;
+  }
+  .header__navbar-logout{
+    display: block;
+  }
+  /* ----------- Thông tin ví ----------- */
+.wallet-info {
+  display: flex;
+  flex-direction: column; /* Hiển thị theo chiều dọc */
+  align-items: center; /* Căn giữa nội dung */
+  justify-content: center; /* Căn giữa theo chiều dọc */
+  /* background: rgba(255, 255, 255, 0.1); */
+  padding: 8px;
+  border-radius: 10px;
+  position: relative;
+  transition: 0.3s;
+  width: 120px; /* Giới hạn chiều rộng */
+}
+
+/* Logo ví */
+.wallet-logo {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+}
+
+/* Địa chỉ ví */
+.wallet-address {
+  font-size: 12px;
+  background: rgba(255, 255, 255, 0.2);
+  padding: 4px 6px;
+  border-radius: 6px;
+  font-weight: bold;
+  text-align: center;
+  margin-top: 5px;
+  width: 100%;
+}
+
+/* Số dư ví */
+.wallet-balance {
+  font-size: 12px;
+  font-weight: bold;
+  color: black;
+  text-align: center;
+  margin-top: 3px;
+  width: 100%;
+}
+
+/* ----------- Nút logout (Ẩn mặc định) ----------- */
+.header__navbar-logout {
+  display: none;
+  background: red;
+  border: none;
+  padding: 6px 10px;
+  border-radius: 6px;
+  color: white;
+  font-size: 12px;
+  cursor: pointer;
+  margin-top: 8px;
+  transition: 0.3s;
+}
+
+/* Hiện nút logout khi di chuột vào .wallet-info */
+.wallet-info:hover .header__navbar-logout {
+  display: block;
+}
+
+/* Hover hiệu ứng nút logout */
+.header__navbar-logout:hover {
+  background: darkred;
+}
+/* Container chính */
+.wallet-info {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: white;
+  padding: 10px;
+  border-radius: 10px;
+  transition: 0.3s;
+  width: 150px; /* Định kích thước để căn giữa */
+  height: 50px; /* Giới hạn chiều cao */
+  position: relative;
+  overflow: hidden;
+}
+
+/* Địa chỉ ví & số dư */
+.wallet-address, 
+.wallet-balance {
+  font-size: 12px;
+  font-weight: bold;
+  text-align: center;
+  transition: opacity 0.3s;
+}
+
+/* Chỉ hiển thị nút "Disconnect" khi hover */
+.wallet-info:hover .header__navbar-logout {
+  opacity: 1 !important;
+  visibility: visible !important;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: red;
+  padding: 8px 12px;
+  border-radius: 6px;
+  color: white;
+  font-size: 14px;
+  cursor: pointer;
+  border: none;
+  transition: all 0.3s ease-in-out;
+}
+
+/* Mặc định nút "Disconnect" ẩn */
+  
+
+.wallet-info-modal {
+  position: fixed;
+  top: 20%;
+  right: 20px;
+  background: white;
+  padding: 15px;
+  border-radius: 10px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+  width: 280px;
+  z-index: 1000;
+  top:76.828;
+}
+
+.wallet-info-content {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.wallet-info-content h3 {
+  margin-bottom: 10px;
+  font-size: 1.2rem;
+}
+
+.wallet-info-content p {
+  font-size: 1rem;
+  margin: 5px 0;
+  word-break: break-word;
+}
+
+.close-button1 {
+  position: absolute;
+  top: 5px;
+  right: 10px;
+  background: transparent;
+  border: none;
+  font-size: 1.2rem;
+  cursor: pointer;
+}
+
+.disconnect-button {
+  width: 100%;
+  padding: 8px;
+  margin-top: 10px;
+  background: #ff4d4d;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.disconnect-button:hover {
+  background: #cc0000;
+}
+
+.header__navbar {
+  color: red !important;
+  margin-left: auto;
+}
+.header__navbar-navigate {
+  margin-left: 0px !important; /* Hoặc giá trị phù hợp */
+}
+.header__navbar-login{
+  margin-left: 0px;
+}
+.wallet-info{
+  margin-right: 60px;
+}
+.header__navbar-login{
+  padding-left: 30px;
+}
+.wallet-info{
+  padding: 0px;
+}
+.wallet-button{
+  background-color: white;
+  border-radius: 0%;
+}
+.wallet-button :hover{
+  background-color: #0f80e0;
+    box-shadow: 0 0 15px rgba(22, 150, 255, 0.6);
+    color: #c6c6c6;
+
+}
+
+
+
 @media(max-width: 600px) {
 
-    .header__navbar,
-    .header__navbar-icon {
-        font-size: 1.2rem;
-    }
+  .header__navbar,
+  .header__navbar-icon {
+      font-size: 1.2rem;
+  }
 
-    .header__navbar-navigate--page::after {
-        bottom: 2;
-        height: 1.2px;
-    }
+  .header__navbar-navigate--page::after {
+      bottom: 2;
+      height: 1.2px;
+  }
 
-    .header__navbar-login {
-        font-size: 1.5rem;
-        padding: 1rem 2.5rem;
-    }
+  .header__navbar-login {
+      font-size: 1.5rem;
+      padding: 1rem 2.5rem;
+  }
 }
