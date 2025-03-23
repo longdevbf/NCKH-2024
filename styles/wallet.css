@@ -142,7 +142,6 @@ button:hover .login__button {
     padding: 25px;
     z-index: 1000;
     min-width: 300px;
-    position: absolute;
   }
   
   .modal-title {
@@ -336,7 +335,7 @@ button:hover .login__button {
 
 .wallet-info-modal {
   position: fixed;
-  top: 20%;
+  top: 76.828px;
   right: 20px;
   background: white;
   padding: 15px;
@@ -421,7 +420,7 @@ button:hover .login__button {
 
 
 
-@media(max-width: 600px) {
+/* @media(max-width: 600px) {
 
   .header__navbar,
   .header__navbar-icon {
@@ -437,4 +436,4 @@ button:hover .login__button {
       font-size: 1.5rem;
       padding: 1rem 2.5rem;
   }
-}
+} */
