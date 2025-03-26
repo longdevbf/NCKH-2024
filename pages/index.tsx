@@ -1,9 +1,9 @@
 import { useState, useEffect } from "react";
 import type { NextPage } from "next";
-import styles from '../styles/Home.module.css';
+import styles from "../styles/Home.module.css";
 import { useWallet, CardanoWallet } from "@meshsdk/react";
-import dynamic from 'next/dynamic';
-import styled from 'styled-components';
+import dynamic from "next/dynamic";
+import styled from "styled-components";
 
 const Player = dynamic(
   () => import("@lottiefiles/react-lottie-player").then((mod) => mod.Player),
@@ -11,8 +11,8 @@ const Player = dynamic(
 );
 
 export const useWalletContext = () => {
-    const { wallet, connected } = useWallet();
-    return { wallet, connected };
+  const { wallet, connected } = useWallet();
+  return { wallet, connected };
 };
 
 const Home: NextPage = () => {
@@ -24,12 +24,12 @@ const Home: NextPage = () => {
   const { wallet, connected } = useWalletContext();
 
   useEffect(() => {
-    const isLoaded = sessionStorage.getItem('hasLoadedOnce');
+    const isLoaded = sessionStorage.getItem("hasLoadedOnce");
     if (!isLoaded) {
       const timer = setTimeout(() => {
         setLoading(false);
         setFadeIn(true);
-        sessionStorage.setItem('hasLoadedOnce', 'true');
+        sessionStorage.setItem("hasLoadedOnce", "true");
       }, 3000);
       return () => clearTimeout(timer);
     } else {
@@ -60,29 +60,33 @@ const Home: NextPage = () => {
   const Header = () => {
     useEffect(() => {
       const strings = [
-        'Welcome to HeritageChain The Future of Technology Is Here',
-        'Preserving Personal Legacies Through Blockchain Technology',
-        'A Secure and Transparent Legacy Management Platform',
-        'Connecting Legacies to a Sustainable Future and Beyond',
+        "Welcome to HeritageChain The Future of Technology Is Here",
+        "Preserving Personal Legacies Through Blockchain Technology",
+        "A Secure and Transparent Legacy Management Platform",
+        "Connecting Legacies to a Sustainable Future and Beyond",
       ];
       let counter = 0;
       const options = {
         offset: 0,
         timeout: 15,
         iterations: 5,
-        characters: 'abcdefghijklmnopqrstuvwxyz'.split(''),
+        characters: "abcdefghijklmnopqrstuvwxyz".split(""),
         resolveString: strings[counter],
-        element: document.querySelector('.header__textAndImage-text--one')
+        element: document.querySelector(".header__textAndImage-text--one"),
       };
 
-      const randomCharacter = (chars: string[]) => chars[Math.floor(Math.random() * chars.length)];
+      const randomCharacter = (chars: string[]) =>
+        chars[Math.floor(Math.random() * chars.length)];
       const doRandomiserEffect = (opt: any, cb: Function) => {
         const { characters, timeout, element, partialString } = opt;
         let { iterations } = opt;
         setTimeout(() => {
           if (iterations >= 0) {
             const nextOptions = { ...opt, iterations: iterations - 1 };
-            element.innerHTML = iterations === 0 ? partialString : partialString + randomCharacter(characters);
+            element.innerHTML =
+              iterations === 0
+                ? partialString
+                : partialString + randomCharacter(characters);
             doRandomiserEffect(nextOptions, cb);
           } else cb();
         }, timeout);
@@ -101,12 +105,17 @@ const Home: NextPage = () => {
       const effectCallback = () => {
         setTimeout(() => {
           counter = (counter + 1) % strings.length;
-          doResolverEffect({ ...options, resolveString: strings[counter] }, effectCallback);
+          doResolverEffect(
+            { ...options, resolveString: strings[counter] },
+            effectCallback
+          );
         }, 1000);
       };
 
-      if (typeof window !== 'undefined') {
-        options.element = document.querySelector('.header__textAndImage-text--one');
+      if (typeof window !== "undefined") {
+        options.element = document.querySelector(
+          ".header__textAndImage-text--one"
+        );
         doResolverEffect(options, effectCallback);
       }
 
@@ -121,14 +130,20 @@ const Home: NextPage = () => {
               Welcome to Web 3.0 The Future of Technology Is Here
             </h1>
             <p className="header__textAndImage-text-two">
-              Welcome to Web3, where cutting-edge technology meets innovative creativity. Here, we believe in the power of blockchain and decentralized solutions to create a more transparent, secure, and sustainable digital world. Join us to explore the best that modern technology has to offer!
+              Welcome to Web3, where cutting-edge technology meets innovative
+              creativity. Here, we believe in the power of blockchain and
+              decentralized solutions to create a more transparent, secure, and
+              sustainable digital world. Join us to explore the best that modern
+              technology has to offer!
             </p>
           </div>
-          <div className={`header__textAndImage-image ${fadeIn ? "fade-in" : ""}`}>
+          <div
+            className={`header__textAndImage-image ${fadeIn ? "fade-in" : ""}`}
+          >
             <Player
               src="https://lottie.host/18525483-031f-4f2e-9e35-7fd813350b23/OLuEyQDrGd.json"
               speed={1}
-              style={{ width: '500px', height: '500px', marginTop: '-50px' }}
+              style={{ width: "500px", height: "500px", marginTop: "-50px" }}
               loop
               autoplay
             />
@@ -140,7 +155,9 @@ const Home: NextPage = () => {
         {showWalletInfo && wallet && (
           <div className="wallet-info">
             <p>Wallet Address: {wallet?.address}</p>
-            <button onClick={() => console.log("Log out logic here")}>Log out</button>
+            <button onClick={() => console.log("Log out logic here")}>
+              Log out
+            </button>
           </div>
         )}
       </header>
@@ -174,7 +191,9 @@ const Home: NextPage = () => {
           </div>
           <div className="transaction-item transaction-item--right">
             <span className="transaction-item__label">User</span>
-            <span className="transaction-item__size transaction--online">1000</span>
+            <span className="transaction-item__size transaction--online">
+              1000
+            </span>
           </div>
         </div>
 
