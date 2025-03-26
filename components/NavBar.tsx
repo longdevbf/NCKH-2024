@@ -9,7 +9,7 @@ import { useUser } from "../context/UserContext";
 const NavBar = () => {
   const [showWalletModal, setShowWalletModal] = useState(false);
   const [showWalletInfo, setShowWalletInfo] = useState(false); // State cho modal thông tin ví
-  const { userInfo, updateUserInfo, clearUserInfo } = useUser(); 
+  const { userInfo, updateUserInfo, clearUserInfo } = useUser();
   const { pathname } = useRouter();
   const { wallet, connect, disconnect } = useWallet();
   const router = useRouter();
@@ -68,6 +68,14 @@ const NavBar = () => {
           }}>
             Dedicated
           </Link>
+          <Link href="/MintNFT" className={`header__navbar-navigate--page ${pathname === "/mintnft" ? "active" : ""}`} onClick={(e) => {
+            if (!userInfo.address) {
+              e.preventDefault();
+              toast.warning("Vui lòng kết nối ví trước khi truy cập Mint NFT!");
+            }
+          }}>
+            Mint NFT
+          </Link>
           <Link href="/user" className={`header__navbar-navigate--page ${pathname === "/user" ? "active" : ""}`} onClick={(e) => {
             if (!userInfo.address) {
               e.preventDefault();
@@ -79,10 +87,10 @@ const NavBar = () => {
 
         {userInfo.address ? (
           <button className="wallet-info" onClick={() => setShowWalletInfo(true)}>
-            
-              <span className="wallet-address">{userInfo.address.slice(0, 6)}...{userInfo.address.slice(-8)}</span>
-              <span className="wallet-balance">{userInfo.balance}</span>
-           
+
+            <span className="wallet-address">{userInfo.address.slice(0, 6)}...{userInfo.address.slice(-8)}</span>
+            <span className="wallet-balance">{userInfo.balance}</span>
+
           </button>
         ) : (
           <button className="header__navbar-login" onClick={() => setShowWalletModal(true)}>
