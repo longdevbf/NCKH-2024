@@ -82,7 +82,7 @@ export async function lock(beneficiary: string, assets: Asset[], wallet: any, lo
     await txBuilder
       .txOut(scriptAddr, convertedAssets)  // Sử dụng convertedAssets thay vì assets
       .txOutInlineDatumValue(datum)
-      .metadataValue('674', "")  // Sử dụng metadata chi tiết
+      //.metadataValue('674', "")  // Sử dụng metadata chi tiết
       .changeAddress(walletAddress)
       .selectUtxosFrom(utxos)
       .complete();

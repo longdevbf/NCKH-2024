@@ -57,7 +57,7 @@ export async function unlock(txHash: string, wallet: any) {
     const { scriptAddr, scriptCbor } = getScript();
     
     // Giải mã datum từ UTXO để lấy thông tin khóa
-    const datum = deserializeDatum<VestingDatum>(vestingUtxo.output.plutusData!);
+    const datum = deserializeDatum(vestingUtxo.output.plutusData!);
     
     // Trích xuất thông tin từ datum
     const lockUntilTimestamp = datum.fields[0].int as number;
@@ -70,16 +70,16 @@ export async function unlock(txHash: string, wallet: any) {
     
  
     const invalidBefore = 
-      unixTimeToEnclosingSlot(Math.min(datum.fields[0].int as number, Date.now() - 15000)
+      unixTimeToEnclosingSlot(
+        Math.min(datum.fields[0].int as number, Date.now() - 15000)
        ,SLOT_CONFIG_NETWORK.preprod) + 1;
  
     const txBuilder = new MeshTxBuilder({
       fetcher: blockchainProvider,
       submitter: blockchainProvider,    
-      verbose: true
+      //verbose: true
     });
     
-
     await txBuilder
       .spendingPlutusScriptV3()
       .txIn(
@@ -97,11 +97,8 @@ export async function unlock(txHash: string, wallet: any) {
         collateralInput.outputIndex,
         collateralOutput.amount,
         collateralOutput.address
-      )
-      if(isBeneficiary){
-       await txBuilder.invalidBefore(invalidBefore)
-      }
-     await txBuilder
+      )     
+     . invalidBefore(invalidBefore)   
       .requiredSignerHash(currentUserPubKeyHash)
       .changeAddress(walletAddress)
       .selectUtxosFrom(utxos)
@@ -109,24 +106,20 @@ export async function unlock(txHash: string, wallet: any) {
       .setNetwork("preprod")
       .complete();
     
-    console.log("Transaction built successfully");
+
     
     // Lấy giao dịch chưa ký
     const unsignedTx = txBuilder.txHex;
     
-    console.log("Signing transaction...");
     
     // Ký và gửi giao dịch
     const signedTx = await wallet.signTx(unsignedTx, true);
     
-    console.log("Submitting transaction...");
+   
     
     const resultTxHash = await wallet.submitTx(signedTx);
     
-    // Ghi log kết quả
-    console.log(`Assets unlocked successfully. TxHash: ${resultTxHash}`);
-    console.log(`Unlock performed by: ${isOwner ? 'Owner' : 'Beneficiary'}, Address: ${walletAddress}`);
-    
+
     // Trả về hash giao dịch
     return resultTxHash;
     
