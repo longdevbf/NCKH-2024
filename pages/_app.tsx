@@ -12,7 +12,7 @@ import "../styles/globals.css";
 import Layout from "../components/Layout";
 import { useRouter } from "next/router";
 import { TransactionProvider } from "../context/TransactionContext";
-import { UserProvider } from "../context/UserContext"; 
+import { UserProvider } from "../context/UserContext";
 
 function MyApp({ Component, pageProps }: AppProps) {
   const router = useRouter();
@@ -21,7 +21,9 @@ function MyApp({ Component, pageProps }: AppProps) {
   return (
     <MeshProvider>
       <TransactionProvider>
-        <UserProvider> {/* Bọc toàn bộ app với UserProvider */}
+        <UserProvider>
+          {" "}
+          {/* Bọc toàn bộ app với UserProvider */}
           {isLoginPage ? (
             <Component {...pageProps} />
           ) : (

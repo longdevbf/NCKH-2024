@@ -1,268 +1,290 @@
-/* Lock Property Container */
-.lock-property {
-  display: flex;
-  justify-content: space-between;
-  padding: 40px;
-  color: black;
-  font-family: 'Arial', sans-serif;
-  border-radius: 12px;
-  max-width: 135rem;
-  margin: 14rem auto;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+/* Main container styles */
+.dedicated-page {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  color: #333;
 }
 
-/* Lock Property Form */
-.lock-property__form {
+/* Tab content container */
+.tab-content {
+  margin-bottom: 30px;
+}
+
+/* Lock and Unlock property containers */
+.lock-property,
+.unlock-property {
   display: flex;
   flex-direction: column;
-  flex-basis: 55%;
+  gap: 30px;
+  padding-top: 75px;
 }
 
-/* Label Styling */
-.lock-property__label {
+/* Section containers */
+.lock-property__section,
+.unlock-property__section {
+  width: 100%;
+}
+
+/* Form styles */
+.lock-property__form,
+.unlock-property__form {
+  background-color: #fff;
+  border-radius: 8px;
+  padding: 24px;
+}
+.lock-property__form{
+  border-color: #3ff16f;
+  box-shadow: 0 0 8px rgba(39, 189, 71, 0.5); /* Hiệu ứng viền sáng */
+  outline: none;
+}
+.unlock-property__form{
+  border-color: #176fe2;
+  box-shadow: 0 0 8px rgba(28, 89, 196, 0.5); /* Hiệu ứng viền sáng */
+  outline: none;
+}
+.lock-property__form,
+.unlock-property__form{
+  padding-top: 4px;
+}
+
+.form-group {
+  margin-top: 15px;
+  margin-bottom: 15px;
+}
+
+.lock-property__label,
+.unlock-property__label {
+  display: block;
   margin-bottom: 8px;
-  font-size: 16px;
-  font-weight: bold;
-  color: #333;
+  font-weight: 500;
+  color: #4a5568;
 }
 
-/* Input, Textarea, Select Styling */
 .lock-property__input,
 .lock-property__textarea,
-.lock-property__select {
-  width: calc(100% - 50px);
+.unlock-property__textarea {
+  width: 100%;
   padding: 12px;
-  margin-bottom: 20px;
-  border: 1px solid #e0e0e0;
-  border-radius: 8px;
-  background-color: #f4f4f4;
-  color: #333;
-  transition: border-color 0.3s, background-color 0.3s ease;
+  border: 1px solid #e2e8f0;
+  border-radius: 6px;
+  font-size: 14px;
+  transition: border-color 0.2s ease;
 }
 
 .lock-property__input:focus,
 .lock-property__textarea:focus,
-.lock-property__select:focus {
-  border-color: #4a90e2;
-  background-color: #fff;
+.unlock-property__textarea:focus {
+  border-color: #3182ce;
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(49, 130, 206, 0.1);
 }
 
-/* Address Input Container */
-.lock-property__address-input-container {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  position: relative;
+/* NFT fields section */
+.nft-fields {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 15px;
 }
 
-/* Address Input and Textarea Styling */
-.lock-property__textarea,
-.lock-property__input {
-  flex: 1;
+@media (max-width: 992px) {
+  .nft-fields {
+    grid-template-columns: 1fr;
+  }
 }
 
-/* Add and Remove Button Styling */
-.lock-property__add-button,
-.lock-property__remove-button {
-  padding: 10px;
-  margin: 0 0 2rem 2rem;
-  width: 40px;
-  height: 40px;
-  border: none;
-  border-radius: 50%;
-  font-size: 20px;
-  cursor: pointer;
-  transition: background-color 0.3s;
+.nft-field {
+  margin-bottom: 15px;
 }
 
-.lock-property__add-button {
-  background-color: #61ff4c;
-  color: #000;
+/* Form hint text */
+.form-hint {
+  font-size: 13px;
+  color: #718096;
+  margin: 6px;
+
+  background-color: #ebf8ff; /* Light blue background */
+  border-radius: 6px; /* Rounded corners */
+  padding: 8px; /* Add some padding */
 }
 
-.lock-property__add-button:hover {
-  background-color: #49e03e;
-}
-
-.lock-property__remove-button {
-  background-color: #e60023;
-  color: white;
-}
-
-.lock-property__remove-button:hover {
-  background-color: #c8001e;
-}
-
-/* Remove Button Visibility for Additional Addresses */
-.lock-property__address-input-container:nth-child(n+2) .lock-property__remove-button {
-  visibility: visible;
-}
-
-/* Preview Box Styling */
-.lock-property__preview {
-  margin-top: -4rem;
-  margin-left: 1.5rem;
-  flex-basis: 45%;
-  background-color: #ffffff;
-  padding: 20px;
-  border-radius: 8px;
-  display: flex;
-  flex-direction: column;
-  overflow: auto;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
-
-/* Preview Title Styling */
-.lock-property__preview-title {
-  font-size: 18px;
-  margin-bottom: 10px;
-  text-align: center;
-  color: #000000;
-}
-
-/* Preview Box Content Styling */
-.lock-property__preview-box {
-  background-color: #f7f7f7;
-  border-radius: 8px;
-  color: #333;
-  padding: 10px;
-  word-wrap: break-word;
-  overflow: auto;
-  max-height: 500px;
-  flex: 1;
-}
-
-/* Button Container */
+/* Button styles */
 .button-container {
   display: flex;
-  gap: 10px;
+  margin-top: 10px;
 }
 
-/* Lock and Refund Button Styling */
 .button-lock,
-.button-refund {
-  width: 100px;
-  height: 40px;
-  background-color: #4CAF50;
-  color: white;
+.button-unlock,
+.button-clear {
+  padding: 12px 24px;
   border: none;
-  border-radius: 5px;
+  border-radius: 6px;
+  font-weight: 600;
   cursor: pointer;
-  font-size: 16px;
-  transition: background-color 0.3s ease;
+  transition: background-color 0.2s ease, transform 0.1s ease;
 }
 
-.button-lock:hover,
-.button-refund:hover {
-  background-color: #45a049;
+.button-lock {
+  background-color: #1fd47a;
+  color: white;
+}
+.button-unlock {
+  background-color: #2e5aec;
+  color: white;
 }
 
-/* React DatePicker Styling */
-.react-datepicker {
-  font-family: 'Arial', sans-serif;
+.button-lock:hover {
+  background-color: #189f53;
+  transform: translateY(-1px);
+}
+,
+.button-unlock:hover {
+  background-color: #2932d7;
+  transform: translateY(-1px);
+}
+
+.button-lock:disabled,
+.button-unlock:disabled {
+  background-color: #a0aec0;
+  cursor: not-allowed;
+}
+
+.button-clear {
+  background-color: #6c757d;
+  color: white;
+  margin-left: 10px;
+}
+
+.button-clear:hover {
+  background-color: #5a6268;
+  transform: translateY(-1px);
+}
+
+/* Loading indicator */
+.loading-indicator {
+  margin-top: 20px;
+  padding: 12px;
+  background-color: #ebf8ff;
+  border-radius: 6px;
+  color: #2b6cb0;
+  text-align: center;
+}
+
+/* Preview section */
+.lock-property__preview,
+.unlock-property__preview {
+  background-color: #f8fafc;
   border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  border: 1px solid #ddd;
-  background-color: #fff;
+  padding: 24px;
+}
+.lock-property__preview{
+  border-color: #3ff16f;
+  box-shadow: 0 0 8px rgba(39, 189, 71, 0.5); /* Hiệu ứng viền sáng */
+  outline: none;
+}
+.unlock-property__preview{
+  border-color: #176fe2;
+  box-shadow: 0 0 8px rgba(28, 89, 196, 0.5); /* Hiệu ứng viền sáng */
+  outline: none;
 }
 
-/* Datepicker Header Styling */
-.react-datepicker__header {
-  background-color: #4a90e2;
-  color: white;
-  border-bottom: none;
-  padding: 12px 8px;
-  border-radius: 8px 8px 0 0;
+.lock-property__preview-title,
+.unlock-property__preview-title {
+  margin-top: 0;
+  margin-bottom: 16px;
+  color: #4a5568;
+  font-size: 18px;
 }
 
-/* Current Month Styling */
-.react-datepicker__current-month {
-  font-size: 16px;
-  font-weight: bold;
+.lock-property__preview-box,
+.unlock-property__preview-box {
+  background-color: white;
+  border: 1px solid #e2e8f0;
+  border-radius: 6px;
+  padding: 16px;
 }
 
-/* Navigation Arrow Styling */
-.react-datepicker__navigation--previous,
-.react-datepicker__navigation--next {
-  top: 12px;
-  line-height: 1.5;
+/* Transaction result section */
+.transaction-result {
+  margin-top: 24px;
 }
 
-.react-datepicker__navigation-icon::before {
-  border-color: white;
+.transaction-hash {
+  background-color: white;
+  border: 1px solid #e2e8f0;
+  border-radius: 6px;
+  padding: 16px;
 }
 
-/* Day Styling */
-.react-datepicker__day {
-  font-size: 14px;
-  color: #333;
-  padding: 8px;
-  margin: 0;
-  border-radius: 50%;
-  transition: background-color 0.2s ease-in-out;
-}
-
-.react-datepicker__day:hover {
-  background-color: #f0f0f0;
-  cursor: pointer;
-}
-
-.react-datepicker__day--today {
-  font-weight: bold;
-  color: #4a90e2;
-}
-
-.react-datepicker__day--selected {
-  background-color: #2b2647;
-  color: white;
-}
-
-.react-datepicker__day--selected:hover {
-  background-color: #2b2647;
-  color: white;
-}
-
-/* Outside Month Day Styling */
-.react-datepicker__day--outside-month {
-  color: #ccc;
-}
-
-/* Time Container Styling */
-.react-datepicker__time-container {
-  background-color: #fff;
-  border-left: 1px solid #ddd;
-}
-
-/* Time List Item Styling */
-.react-datepicker__time-list-item {
-  padding: 8px 12px;
-  font-size: 14px;
-  color: #333;
-  transition: background-color 0.2s ease-in-out;
-}
-
-.react-datepicker__time-list-item:hover {
-  background-color: #f0f0f0;
-}
-
-/* Selected Time List Item Styling */
-.react-datepicker__time-list-item--selected {
-  background-color: #2b2647;
-  color: white;
-}
-
-/* DatePicker Input Styling */
-.react-datepicker__input-container input {
-  padding: 8px;
+.hash-value {
+  background-color: #f7fafc;
+  padding: 12px;
   border-radius: 4px;
-  border: 1px solid #ccc;
+  margin: 10px 0;
+  overflow-x: auto;
+}
+
+.hash-value code {
+  font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
+  font-size: 13px;
+  color: #4a5568;
+  word-break: break-all;
+}
+
+.hash-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 12px;
+}
+
+.copy-button,
+.view-button {
+  padding: 8px 16px;
+  border: none;
+  border-radius: 4px;
   font-size: 14px;
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.copy-button {
+  background-color: #edf2f7;
+  color: #4a5568;
+}
+
+.copy-button:hover {
+  background-color: #e2e8f0;
+}
+
+.view-button {
+  background-color: #3182ce;
+  color: white;
+}
+
+.view-button:hover {
+  background-color: #2c5282;
+}
+
+/* DatePicker custom styling */
+.react-datepicker-wrapper {
   width: 100%;
-  box-sizing: border-box;
-  transition: border-color 0.2s ease-in-out;
+}
+
+.react-datepicker__input-container input {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #e2e8f0;
+  border-radius: 6px;
+  font-size: 14px;
 }
 
 .react-datepicker__input-container input:focus {
-  border-color: #4a90e2;
+  border-color: #3182ce;
   outline: none;
+  box-shadow: 0 0 0 3px rgba(49, 130, 206, 0.1);
 }
