@@ -55,5 +55,8 @@
   border-radius: 8px;
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 1px;
+}
+.dashboard__info-item{
+  margin-bottom: 20px;
 }

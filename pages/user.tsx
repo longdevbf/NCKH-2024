@@ -69,7 +69,6 @@ const Dashboard = () => {
   };
 
   const handleDisconnect = () => {
-    console.log("👉 Đang ngắt kết nối...");
   
     localStorage.removeItem("userInfo");
     localStorage.removeItem("userBalance");
@@ -87,7 +86,6 @@ const Dashboard = () => {
       transactions: 0,
     });
   
-    console.log("✅ Đã ngắt kết nối và xóa dữ liệu!");
   };
   
   
@@ -146,18 +144,8 @@ const Dashboard = () => {
             alt="User"
           />
         </div>
-
-        <div className="dashboard__actions">
-          <button className="dashboard__button">Refund</button>
-
-          {/* ✅ Bấm để show activities */}
-          <button className="dashboard__button" onClick={handleShowActivities}>
-            Recently
-          </button>
-        </div>
-      </div>
-
-      <div className="dashboard__info">
+        <div className="dashboard__info">
+        
         <p className="dashboard__info-item">
           Address: {address ? `${address.slice(0, 6)}...${address.slice(-6)}` : "N/A"}{" "}
           <button className="dashboard__copy-btn" onClick={() => copyToClipboard(address)}>
@@ -176,6 +164,19 @@ const Dashboard = () => {
         <p className="dashboard__info-item">Transaction: {transactions}</p>
       </div>
 
+        
+      </div>
+
+      
+      <div className="dashboard__actions">
+          <button className="dashboard__button">Refund</button>
+
+          {/* ✅ Bấm để show activities */}
+          <button className="dashboard__button" onClick={handleShowActivities}>
+            Recently
+          </button>
+        </div>
+
       {/* ✅ Chỉ hiện activities khi showActivities là true */}
       {showActivities && (
         <div className="dashboard__activities">
@@ -191,6 +192,7 @@ const Dashboard = () => {
                   <p><strong>Hành động:</strong> {activity.type.toUpperCase()}</p>
                   <p><strong>Thời gian:</strong> {new Date(activity.timestamp).toLocaleString()}</p>
                   <p><strong>Ví:</strong> {activity.walletAddress.slice(0, 8)}...{activity.walletAddress.slice(-6)}</p>
+                  <p><strong>Mã Hash:</strong> {activity.txHash}</p>
                 </li>
               ))}
             </ul>
