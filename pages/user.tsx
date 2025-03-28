@@ -18,26 +18,26 @@ const Dashboard = () => {
   const [showActivities, setShowActivities] = useState(false); // ✅ Mặc định ẩn
 
   // Thêm useEffect để xử lý sự kiện beforeunload
-  useEffect(() => {
-    // Hàm xử lý khi người dùng sắp rời khỏi trang
-    const handleBeforeUnload = () => {
-      // Chỉ xóa key "userBalance" cụ thể khi thoát trang
-      localStorage.removeItem("userBalance");
+  // useEffect(() => {
+  //   // Hàm xử lý khi người dùng sắp rời khỏi trang
+  //   const handleBeforeUnload = () => {
+  //     // Chỉ xóa key "userBalance" cụ thể khi thoát trang
+  //     localStorage.removeItem("userBalance");
       
-      // Nếu muốn xóa nhiều key cụ thể, bạn có thể thêm vào đây
-       localStorage.removeItem("userStakingAddress");
-      localStorage.removeItem("activities");
-      localStorage.removeItem("userInfo");
-    };
+  //     // Nếu muốn xóa nhiều key cụ thể, bạn có thể thêm vào đây
+  //      localStorage.removeItem("userStakingAddress");
+  //     localStorage.removeItem("activities");
+  //     localStorage.removeItem("userInfo");
+  //   };
 
-    // Thêm event listener
-    window.addEventListener('beforeunload', handleBeforeUnload);
+  //   // Thêm event listener
+  //   window.addEventListener('beforeunload', handleBeforeUnload);
 
-    // Cleanup function để tránh memory leak
-    return () => {
-      window.removeEventListener('beforeunload', handleBeforeUnload);
-    };
-  }, []); // Chỉ chạy một lần khi component mount
+  //   // Cleanup function để tránh memory leak
+  //   return () => {
+  //     window.removeEventListener('beforeunload', handleBeforeUnload);
+  //   };
+  // }, []); // Chỉ chạy một lần khi component mount
 
   useEffect(() => {
     console.log("🔄 useEffect đang chạy, kiểm tra kết nối...");
@@ -88,7 +88,27 @@ const Dashboard = () => {
   
   };
   
+  useEffect(() => {
+    console.log("🔄 useEffect đang chạy, kiểm tra kết nối...");
   
+    if (!connected) {
+      console.log("🚫 Không có kết nối ví, không cập nhật dữ liệu.");
+      return;
+    }
+  
+    const fetchWalletData = async () => {
+      console.log("🔍 Fetching dữ liệu ví...");
+      try {
+        const addr = await wallet.getChangeAddress();
+        console.log("✅ Địa chỉ ví:", addr);
+        setAddress(addr); // ✅ Cập nhật địa chỉ ví vào state
+      } catch (error) {
+        console.error("❌ Lỗi khi lấy dữ liệu ví:", error);
+      }
+    };
+  
+    fetchWalletData();
+  }, [wallet, connected, transactions]);
   
   const handleShowActivities = () => {
     if (!address) {
@@ -96,33 +116,41 @@ const Dashboard = () => {
       return;
     }
   
-    // Toggle: Nếu đang hiện thì ẩn
-    setShowActivities(prev => {
+    setShowActivities((prev) => {
       const newShow = !prev;
   
       if (newShow) {
-        // Nếu mới chuyển sang hiện thì fetch dữ liệu
         const storedActivities = localStorage.getItem("activities");
   
         if (!storedActivities) {
           toast.info("Không có hoạt động nào!");
-          setActivities([]); // Clear nếu trước đó có data
-          return true; // Vẫn hiện, dù rỗng
+          setActivities([]);
+          return true;
         }
   
         try {
           const parsedActivities = JSON.parse(storedActivities);
   
-          // ✅ Lọc theo ví hiện tại
-          const filteredActivities = parsedActivities.filter(
-            (activity: any) => activity.walletAddress === address
-          );
+          console.log("📌 Tất cả activities:", parsedActivities);
+          console.log("🟢 Địa chỉ ví đang kết nối:", address);
+  
+          // ✅ Lọc activities theo địa chỉ ví
+          const filteredActivities = parsedActivities.filter((activity: any) => {
+            console.log("🔍 Kiểm tra activity:", activity);
+            return  activity.walletAddress === address ||
+            activity.getAddress === address || 
+            activity.getAdress === address // ✅
+
+          });
+  
+          console.log("🔍 Activities tìm thấy:", filteredActivities);
   
           if (filteredActivities.length === 0) {
             toast.info("Chưa có hoạt động nào cho ví này!");
           }
   
           setActivities(filteredActivities);
+  
         } catch (error) {
           console.error("Lỗi khi parse activities:", error);
           toast.error("Dữ liệu activities bị lỗi!");
@@ -130,9 +158,10 @@ const Dashboard = () => {
         }
       }
   
-      return newShow; // Toggle true/false
+      return newShow;
     });
   };
+  
   
   return (
     <div className="dashboard">

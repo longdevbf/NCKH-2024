@@ -12,7 +12,7 @@ const saveActivity = (
   walletAddress: string,
   timestamp: string,
   txHash?: string,
-  cborTx?: string 
+  getAdress  ?: string 
 ) => {
   const activities = JSON.parse(localStorage.getItem('activities') || '[]');
 
@@ -21,7 +21,7 @@ const saveActivity = (
     walletAddress,
     timestamp,
      txHash,
-    cborTx, 
+    getAdress, 
   };
 
   activities.unshift(newActivity);
@@ -177,7 +177,7 @@ const LockProperty = () => {
       
       const walletAddress = (await wallet.getUsedAddresses())[0];
       const timestamp = new Date().toISOString();
-      saveActivity('lock', walletAddress, timestamp,resultTxHash);
+      saveActivity('lock', walletAddress, timestamp,resultTxHash,address);
       // Hiển thị thông báo thành công nhưng không xóa dữ liệu
       alert("Assets locked successfully!");
       
@@ -386,44 +386,95 @@ const UnlockProperty = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [transactionSuccess, setTransactionSuccess] = useState(false);
   const { connected, wallet } = useWallet();
+  const [activities, setActivities] = useState<any[]>([]);
 
   const handleUnlock = async () => {
     if (!txHashToUnlock.trim()) {
       alert("Please enter a transaction hash to unlock.");
       return;
     }
-
+  
     try {
       if (!connected) {
         alert("Please connect your wallet first.");
         return;
       }
-      
+  
       setIsLoading(true);
       setResultTxHash(null);
       setTransactionSuccess(false);
-      
+  
       // Gọi hàm unlock để mở khóa tài sản
       const unlockTxHash = await unlock(txHashToUnlock, wallet);
       setResultTxHash(unlockTxHash);
       setTransactionSuccess(true);
-      
+  
       // Cập nhật số lượng giao dịch
       incrementTransactions();
       const walletAddress = (await wallet.getUsedAddresses())[0];
       const timestamp = new Date().toISOString();
-      saveActivity('unlock', walletAddress, timestamp,unlockTxHash);
-      // Hiển thị thông báo thành công nhưng không xóa dữ liệu
-      alert("Assets unlocked successfully!");
-
-      
+  
+      let storedActivities = localStorage.getItem("activities");
+      let activities = storedActivities ? JSON.parse(storedActivities) : [];
+  
+      // ✅ Tìm hoạt động trước đó của ví
+      const matchingActivity = activities.find(
+        (activity: any) =>
+          activity.getAddress === walletAddress || activity.walletAddress === walletAddress
+      );
+  
+      if (matchingActivity) {
+        // ✅ Sao chép sâu để tránh thay đổi dữ liệu gốc
+        const newActivity = JSON.parse(JSON.stringify(matchingActivity));
+  
+        // ✅ Cập nhật thông tin mới
+        newActivity.type = "unlock";
+        newActivity.txHash = unlockTxHash;
+        newActivity.timestamp = timestamp;
+  
+        // ✅ Kiểm tra nếu `walletAddress` và `getAddress` trùng nhau, sửa lỗi
+        if (newActivity.walletAddress === newActivity.getAddress) {
+          newActivity.getAddress = "unknown"; // Hoặc có thể là một giá trị mặc định khác
+        }
+  
+        // Thêm vào đầu danh sách
+        activities = [newActivity, ...activities];
+      } else {
+        // ✅ Nếu không có hoạt động trước đó, thêm mới
+        const newActivity = {
+          type: "unlock",
+          walletAddress,
+          getAddress: walletAddress !== undefined ? walletAddress : "unknown", // Đảm bảo không bị trùng
+          txHash: unlockTxHash,
+          timestamp,
+        };
+  
+        activities = [newActivity, ...activities];
+      }
+  
+      // ✅ Log dữ liệu trước khi cập nhật
+      console.log("Before update:", JSON.stringify(activities, null, 2));
+  
+      // Lưu vào localStorage
+      localStorage.setItem("activities", JSON.stringify(activities));
+  
+      // ✅ Log dữ liệu sau khi cập nhật
+      console.log("After update:", localStorage.getItem("activities"));
+  
+      // Cập nhật state để hiển thị ngay
+      setActivities([...activities]); // ⚡ Tạo bản sao mới để kích hoạt re-render
+  
+      // Hiển thị thông báo thành công và mã giao dịch unlock
+      alert(`Assets unlocked successfully!\nTransaction Hash: ${unlockTxHash}`);
+  
     } catch (error) {
       console.error("Error unlocking assets:", error);
-      alert(`Error: ${error instanceof Error ? error.message : 'Unknown error occurred'}`);
+      alert(`Error: ${error instanceof Error ? error.message : "Unknown error occurred"}`);
     } finally {
       setIsLoading(false);
     }
   };
+  
 
   const handleClearForm = () => {
     setTxHashToUnlock('');
