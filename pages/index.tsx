@@ -149,17 +149,6 @@ const Home: NextPage = () => {
             />
           </div>
         </div>
-        <div className="wallet-balance" onClick={handleWalletBalanceClick}>
-          <span>Wallet Balance</span>
-        </div>
-        {showWalletInfo && wallet && (
-          <div className="wallet-info">
-            <p>Wallet Address: {wallet?.address}</p>
-            <button onClick={() => console.log("Log out logic here")}>
-              Log out
-            </button>
-          </div>
-        )}
       </header>
     );
   };
