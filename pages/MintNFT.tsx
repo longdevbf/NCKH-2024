@@ -15,12 +15,13 @@ import {
   resolveScriptHash,
   serializeAddressObj,
   serializePlutusScript,
-  scriptAddress
+  scriptAddress,
 } from "@meshsdk/core";
 
 export default function MintNFTPage() {
   const { wallet, connected } = useWalletContext();
   const [file, setFile] = useState<File | null>(null);
+  const [preview, setPreview] = useState<string>("");
   const [title, setTitle] = useState<string>("");
   const [description, setDescription] = useState<string>("");
   const [quantity, setQuantity] = useState<number>(1);
@@ -37,7 +38,10 @@ export default function MintNFTPage() {
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
     if (e.target.files && e.target.files.length > 0) {
-      setFile(e.target.files[0]);
+      const selectedFile = e.target.files[0];
+      setFile(selectedFile);
+      // Tạo URL preview cho file
+      setPreview(URL.createObjectURL(selectedFile));
     }
   };
 
@@ -58,8 +62,8 @@ export default function MintNFTPage() {
       }
       const ipfsUrl = `ipfs://${uploadResult.cid}`;
       const useraddr = await wallet.getChangeAddress();
-      const {pubKeyHash: userPubKeyHash} = deserializeAddress(useraddr);
-      
+      const { pubKeyHash: userPubKeyHash } = deserializeAddress(useraddr);
+
       const metadata = {
         name: title,
         _pk: userPubKeyHash,
@@ -82,16 +86,25 @@ export default function MintNFTPage() {
     <div className="page-container">
       <div className="card">
         <h1 className="title">Mint Your NFT</h1>
-        <h1 className="title">Mint Your NFT</h1> 
-        <h1 className="title">Mint Your NFT</h1>
+
         {/* File Upload */}
         <div className="input-group">
           <label className="input-label">Upload Image</label>
+          <label htmlFor="file-upload" className="custom-file-upload">
+            Chọn tệp
+          </label>
           <input
+            id="file-upload"
             type="file"
+            accept="image/*"
             onChange={handleFileChange}
-            className="file-input"
+            style={{ display: "none" }}
           />
+          {preview && (
+            <div className="image-preview">
+              <img src={preview} alt="Image Preview" />
+            </div>
+          )}
         </div>
 
         {/* Title Input */}
