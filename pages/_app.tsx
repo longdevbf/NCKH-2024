@@ -9,6 +9,7 @@ import "../styles/aboutus.css";
 import "../styles/dedicated.css";
 import "../styles/user.css";
 import "../styles/globals.css";
+import "../styles/MintNFTPage.css";
 import Layout from "../components/Layout";
 import { useRouter } from "next/router";
 import { TransactionProvider } from "../context/TransactionContext";

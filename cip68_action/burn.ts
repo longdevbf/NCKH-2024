@@ -24,7 +24,6 @@ import {
   // Constants
   const APP_WALLET_ADDRESS = "addr_test1qqwkave5e46pelgysvg6mx0st5zhte7gn79srscs8wv2qp5qkfvca3f7kpx3v3rssm4j97f63v5whrj8yvsx6dac9xrqyqqef6";
   const appNetwork = "preprod";
-
   
   // Helper functions
   function readValidator(title: string): string {

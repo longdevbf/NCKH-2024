@@ -3,7 +3,7 @@ import { useWallet } from '@meshsdk/react';
 import { useTransaction } from "../context/TransactionContext";
 import { lock } from '../mesh/functionDepositWithMesh';
 import { unlock } from '../mesh/functionWithDrawMesh';
-import { useWalletContext } from './index';
+//import { useWalletContext } from './index';
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
@@ -414,7 +414,7 @@ const UnlockProperty = () => {
       const walletAddress = (await wallet.getUsedAddresses())[0];
       const timestamp = new Date().toISOString();
   
-      let storedActivities = localStorage.getItem("activities");
+      const storedActivities = localStorage.getItem("activities");
       let activities = storedActivities ? JSON.parse(storedActivities) : [];
   
       // ✅ Tìm hoạt động trước đó của ví

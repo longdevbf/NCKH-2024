@@ -23,7 +23,7 @@ const NavBar = () => {
   const fetchWalletData = async () => {
     if (wallet) {
       try {
-        const address = await wallet.getChangeAddress();
+        const address =  await wallet.getChangeAddress();
         const utxos = await wallet.getUtxos();
         const totalLovelace = utxos.reduce(
           (sum, utxo) => sum + BigInt(utxo.output.amount.find(a => a.unit === "lovelace")?.quantity || 0),
@@ -31,7 +31,7 @@ const NavBar = () => {
         );
         const balance = (Number(totalLovelace) / 1_000_000).toFixed(3) + " ADA";
 
-        updateUserInfo({ address, balance });
+        updateUserInfo({ address, balance } as any);
       } catch (error) {
         console.error("Error fetching wallet data:", error);
       }

@@ -1,9 +1,9 @@
 import { useState, useEffect } from "react";
 import type { NextPage } from "next";
 import styles from "../styles/Home.module.css";
-import { useWallet, CardanoWallet } from "@meshsdk/react";
+import { useWallet} from "@meshsdk/react";
 import dynamic from "next/dynamic";
-import styled from "styled-components";
+//import styled from "styled-components";
 
 const Player = dynamic(
   () => import("@lottiefiles/react-lottie-player").then((mod) => mod.Player),
@@ -150,11 +150,11 @@ const Home: NextPage = () => {
           </div>
         </div>
         <div className="wallet-balance" onClick={handleWalletBalanceClick}>
-          <span>Wallet Balance</span>
+         {/* <span>Wallet Balance</span> */}
         </div>
         {showWalletInfo && wallet && (
           <div className="wallet-info">
-            <p>Wallet Address: {wallet?.address}</p>
+            <p>Wallet Address: {wallet?.getChangeAddress()}</p>
             <button onClick={() => console.log("Log out logic here")}>
               Log out
             </button>
