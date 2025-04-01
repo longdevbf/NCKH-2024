@@ -22,7 +22,7 @@ import {
   // Constants
   const APP_WALLET_ADDRESS = "addr_test1qqwkave5e46pelgysvg6mx0st5zhte7gn79srscs8wv2qp5qkfvca3f7kpx3v3rssm4j97f63v5whrj8yvsx6dac9xrqyqqef6";
   const appNetwork = "preprod";
-
+  
   
   // Helper functions
   function readValidator(title: string): string {
@@ -45,19 +45,22 @@ import {
     if (utxos.length === 0) throw new Error(`No UTXOs found with asset: ${unit}`);
     return utxos[utxos.length - 1];
   }
-  
-  async function updateTokens(wallet: any, params: { assetName: string; metadata: Record<string, string>; txHash?: string }[]) {
+ //const {wallet, connected} = useWalletContext();
+  export async function updateTokens(wallet: any, params: { assetName: string; metadata: Record<string, string>; txHash?: string }[])
+  : Promise<string> {
+    try{
+
     // Get wallet information
     const {utxos, walletAddress, collateral} = await getWalletInfoForTx(wallet);
     const { pubKeyHash: userPubKeyHash } = deserializeAddress(walletAddress);
     const exChange = APP_WALLET_ADDRESS;
     const pubkeyExchange = deserializeAddress(exChange).pubKeyHash;
     
-    // Initialize transaction builder
+      
+
     const unsignedTx = new MeshTxBuilder({
       fetcher: blockchainProvider,
-      submitter: blockchainProvider,
-      verbose: true,
+      submitter: blockchainProvider
     });
     
     // Get validators and scripts
@@ -134,48 +137,15 @@ import {
         collateral.output.amount,
         collateral.output.address
       )
-      .setNetwork(appNetwork);
+      .setNetwork("preprod");
     
-    
-    console.log("Completing transaction ...");
-
     const completedTx = await unsignedTx.complete();
-    console.log("Signing transaction ...");
-    const signedTx = wallet.signTx(completedTx, true);
-    console.log("Submiting transaction ...");
+    const signedTx =await wallet.signTx(completedTx, true);
     const txHashUpdate = await wallet.submitTx(signedTx);
-    console.log("Transaction submitted successfully !");
-    console.log("Update successful! TxHash: " + txHashUpdate);
-
     return txHashUpdate;
+  }catch(error){
+    console.error("Error in updateTokens function:", error);
+    throw error;
   }
-  export default updateTokens;
-
-  // async function main() {
-  //   try {
-  //     const {wall}
-  //     const {utxos, walletAddress, collateral} = await getWalletInfoForTx(wallet);
-  //     const { pubKeyHash: userPubKeyHash } = deserializeAddress(walletAddress);
-  //     const exChange = APP_WALLET_ADDRESS;
-  //     const pubkeyExchange = deserializeAddress(exChange).pubKeyHash;
-  //     const result = await updateTokens([
-  //       wallet,
-  //       {
-  //         assetName: "graph",
-  //         metadata:  {
-  //           _pk: userPubKeyHash,
-  //           canbenh: "ung thu",
-  //           test: "da update lan nua",
-           
-  //         }
-  //       }
-  //     ]);
-      
-  //     console.log("Transaction hash:", result);
-  //   } catch (error) {
-  //     console.error("Error updating tokens:", error);
-  //   }
-  // }
-  
-  // // Run the function
-  // main();
+  }
+export default updateTokens;

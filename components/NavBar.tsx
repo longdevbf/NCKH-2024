@@ -5,15 +5,15 @@ import { useRouter } from "next/router";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useUser } from "../context/UserContext";
-
+import {useWalletContext} from "../pages/index";
 const NavBar = () => {
   const [showWalletModal, setShowWalletModal] = useState(false);
   const [showWalletInfo, setShowWalletInfo] = useState(false); // State cho modal thông tin ví
   const { userInfo, updateUserInfo, clearUserInfo } = useUser();
   const { pathname } = useRouter();
-  const { wallet, connect, disconnect } = useWallet();
+  const { connect, disconnect } = useWallet();
   const router = useRouter();
-
+  const {wallet, connected} =useWalletContext();
   useEffect(() => {  
   
     if (wallet) {
@@ -22,9 +22,10 @@ const NavBar = () => {
   }, [wallet]);
 
   const fetchWalletData = async () => {
-    if (wallet) {
+    if (connected) {
       try {
         const address =  await wallet.getChangeAddress();
+      
         const utxos = await wallet.getUtxos();
         const totalLovelace = utxos.reduce(
           (sum, utxo) => sum + BigInt(utxo.output.amount.find(a => a.unit === "lovelace")?.quantity || 0),

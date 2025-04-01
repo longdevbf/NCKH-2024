@@ -50,7 +50,7 @@ import {
     return await blockchainProvider.fetchAddressUTxOs(address, unit);
   };
   
-  async function burnTokens(wallet: any, params: { assetName: string; quantity: string; txHash?: string }[]) {
+ export async function burnTokens(wallet: any, params: { assetName: string; quantity: string; txHash?: string }[]) {
     // Get wallet information
     const {utxos, walletAddress, collateral} = await getWalletInfoForTx(wallet);
     const { pubKeyHash: userPubKeyHash } = deserializeAddress(walletAddress);
@@ -92,8 +92,6 @@ import {
       userPubKeyHash,
     ]);
     const policyId = resolveScriptHash(mintScriptCbor, "V3");
-    //console.log("Building transaction ...");
-    // Process each token update
     await Promise.all(
         params.map(async ({ assetName, quantity, txHash }) => {
           const userUtxos = await getAddressUTXOAssets(walletAddress, policyId + CIP68_222(stringToHex(assetName)));
@@ -163,30 +161,10 @@ import {
     
     const completeTx = await unsignedTx.complete();
     
-    const signTx = wallet.signTx(completeTx, true);
+    const signTx = await wallet.signTx(completeTx, true);
     
     const txHash = await wallet.submitTx(signTx); 
     
       return txHash;
   }
   export default burnTokens;
-  // Example usage
-//   async function main() {
-//     try {
-      
-//       const result = await burnTokens([
-//         {
-//           assetName: "Hello World",
-//           quantity: "-1"
-          
-//         }
-//       ]);
-      
-//       console.log("Transaction hash:", result);
-//     } catch (error) {
-//       console.error("Error burning tokens:", error);
-//     }
-//   }
-  
-//   // Run the function
-//   main();

@@ -43,13 +43,15 @@ var router_1 = require("next/router");
 var react_toastify_1 = require("react-toastify");
 require("react-toastify/dist/ReactToastify.css");
 var UserContext_1 = require("../context/UserContext");
+var index_1 = require("../pages/index");
 var NavBar = function () {
     var _a = react_1.useState(false), showWalletModal = _a[0], setShowWalletModal = _a[1];
     var _b = react_1.useState(false), showWalletInfo = _b[0], setShowWalletInfo = _b[1]; // State cho modal thông tin ví
     var _c = UserContext_1.useUser(), userInfo = _c.userInfo, updateUserInfo = _c.updateUserInfo, clearUserInfo = _c.clearUserInfo;
     var pathname = router_1.useRouter().pathname;
-    var _d = react_2.useWallet(), wallet = _d.wallet, connect = _d.connect, disconnect = _d.disconnect;
+    var _d = react_2.useWallet(), connect = _d.connect, disconnect = _d.disconnect;
     var router = router_1.useRouter();
+    var _e = index_1.useWalletContext(), wallet = _e.wallet, connected = _e.connected;
     react_1.useEffect(function () {
         if (wallet) {
             fetchWalletData();
@@ -60,7 +62,7 @@ var NavBar = function () {
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
-                    if (!wallet) return [3 /*break*/, 5];
+                    if (!connected) return [3 /*break*/, 5];
                     _a.label = 1;
                 case 1:
                     _a.trys.push([1, 4, , 5]);

@@ -40,6 +40,7 @@ exports.__esModule = true;
 var react_1 = require("react");
 var mint_1 = require("@/cip68_action/mint");
 var update_1 = require("@/cip68_action/update");
+var burn_1 = require("@/cip68_action/burn"); // Import hàm burnTokens
 var index_1 = require("./index");
 var pinata_1 = require("pinata");
 var core_1 = require("@meshsdk/core");
@@ -61,6 +62,10 @@ function NFTPage() {
     var _l = react_1.useState(""), updateImage = _l[0], setUpdateImage = _l[1]; // Nhập IPFS URL cho image
     var _m = react_1.useState("image/jpg"), updateMediaType = _m[0], setUpdateMediaType = _m[1]; // Nhập media type
     var _o = react_1.useState(false), updateLoading = _o[0], setUpdateLoading = _o[1];
+    // States cho Burn NFT
+    var _p = react_1.useState(""), burnTokenName = _p[0], setBurnTokenName = _p[1];
+    var _q = react_1.useState(""), burnQuantity = _q[0], setBurnQuantity = _q[1];
+    var _r = react_1.useState(false), burnLoading = _r[0], setBurnLoading = _r[1];
     // Cấu hình Pinata với JWT và gateway của bạn
     var JWT = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySW5mb3JtYXRpb24iOnsiaWQiOiI3MzdkNzd" +
         "iZC1kMWY2LTQyMWUtOGY2MC01OTgwZTMyOTdhOTEiLCJlbWFpbCI6Imxvbmd0ZC5hNWs0OGd0YkBnbWF" +
@@ -99,10 +104,7 @@ function NFTPage() {
                     _a.label = 1;
                 case 1:
                     _a.trys.push([1, 5, 6, 7]);
-                    return [4 /*yield*/, pinata
-                            .upload
-                            .public
-                            .file(file)];
+                    return [4 /*yield*/, pinata.upload.public.file(file)];
                 case 2:
                     uploadResult = _a.sent();
                     if (!uploadResult || !uploadResult.cid) {
@@ -139,7 +141,7 @@ function NFTPage() {
     }); };
     // Handler cho Update NFT
     var handleUpdate = function () { return __awaiter(_this, void 0, Promise, function () {
-        var addresses, useraddr, userPubKeyHash, metadata, result, error_2;
+        var addresses, userPubKeyHash, metaData, resultTxhash, error_2;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
@@ -155,32 +157,28 @@ function NFTPage() {
                     _a.label = 1;
                 case 1:
                     _a.trys.push([1, 4, 5, 6]);
-                    return [4 /*yield*/, wallet.getUsedAddresses()];
+                    return [4 /*yield*/, wallet.getChangeAddress()];
                 case 2:
                     addresses = _a.sent();
-                    useraddr = addresses.length > 0 ? addresses[0] : '';
-                    userPubKeyHash = core_1.deserializeAddress(useraddr).pubKeyHash;
-                    metadata = {
+                    userPubKeyHash = core_1.deserializeAddress(addresses).pubKeyHash;
+                    console.log("wallet address : " + addresses);
+                    metaData = {
                         name: updateTokenName,
-                        pk: userPubKeyHash,
-                        description: updateDescription,
+                        _pk: userPubKeyHash,
                         image: updateImage,
                         mediaType: updateMediaType,
+                        description: updateDescription,
                         extra: updateExtra
                     };
                     return [4 /*yield*/, update_1["default"](wallet, [
                             {
                                 assetName: updateTokenName,
-                                metadata: metadata
-                            }
+                                metadata: metaData
+                            },
                         ])];
                 case 3:
-                    result = _a.sent();
-                    // Ensure result is a simple string before using it
-                    if (typeof result !== 'string') {
-                        result = JSON.stringify(result);
-                    }
-                    alert("Update NFT thành công! TxHash: " + result);
+                    resultTxhash = _a.sent();
+                    alert("Update NFT thành công! TxHash: " + resultTxhash);
                     return [3 /*break*/, 6];
                 case 4:
                     error_2 = _a.sent();
@@ -194,41 +192,72 @@ function NFTPage() {
             }
         });
     }); };
-    return (react_1["default"].createElement("div", { className: "page-container", style: {
-            paddingTop: "5rem"
-        } },
-        react_1["default"].createElement("div", { style: {
-                display: "flex",
-                gap: "1rem",
-                marginBottom: "2rem"
-            } },
+    // Handler cho Burn NFT
+    var handleBurn = function () { return __awaiter(_this, void 0, Promise, function () {
+        var txHash, error_3;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    if (!connected) {
+                        alert("Ví chưa kết nối");
+                        return [2 /*return*/];
+                    }
+                    if (!burnTokenName || !burnQuantity) {
+                        alert("Vui lòng nhập đầy đủ Token Name và Số lượng");
+                        return [2 /*return*/];
+                    }
+                    setBurnLoading(true);
+                    _a.label = 1;
+                case 1:
+                    _a.trys.push([1, 3, 4, 5]);
+                    return [4 /*yield*/, burn_1["default"](wallet, [
+                            { assetName: burnTokenName, quantity: burnQuantity },
+                        ])];
+                case 2:
+                    txHash = _a.sent();
+                    alert("Burn NFT thành công! TxHash: " + txHash);
+                    return [3 /*break*/, 5];
+                case 3:
+                    error_3 = _a.sent();
+                    console.error("Burn NFT lỗi:", error_3);
+                    alert("Burn NFT thất bại!");
+                    return [3 /*break*/, 5];
+                case 4:
+                    setBurnLoading(false);
+                    return [7 /*endfinally*/];
+                case 5: return [2 /*return*/];
+            }
+        });
+    }); };
+    return (react_1["default"].createElement("div", { className: "page-container", style: { paddingTop: "5rem" } },
+        react_1["default"].createElement("div", { style: { display: "flex", gap: "1rem", marginBottom: "2rem" } },
             react_1["default"].createElement("button", { onClick: function () { return setActiveTab("mint"); }, style: {
                     padding: "0.5rem 1rem",
-                    backgroundColor: activeTab === "mint"
-                        ? "#0070f3"
-                        : "#ccc",
+                    backgroundColor: activeTab === "mint" ? "#0070f3" : "#ccc",
                     color: "#fff",
                     border: "none",
                     cursor: "pointer"
                 } }, "Mint NFT"),
             react_1["default"].createElement("button", { onClick: function () { return setActiveTab("update"); }, style: {
                     padding: "0.5rem 1rem",
-                    backgroundColor: activeTab === "update"
-                        ? "#0070f3"
-                        : "#ccc",
+                    backgroundColor: activeTab === "update" ? "#0070f3" : "#ccc",
                     color: "#fff",
                     border: "none",
                     cursor: "pointer"
-                } }, "Update NFT")),
+                } }, "Update NFT"),
+            react_1["default"].createElement("button", { onClick: function () { return setActiveTab("burn"); }, style: {
+                    padding: "0.5rem 1rem",
+                    backgroundColor: activeTab === "burn" ? "#0070f3" : "#ccc",
+                    color: "#fff",
+                    border: "none",
+                    cursor: "pointer"
+                } }, "Burn NFT")),
         activeTab === "mint" && (react_1["default"].createElement("div", { className: "card" },
             react_1["default"].createElement("h1", { className: "title" }, "Mint Your NFT"),
             react_1["default"].createElement("div", { className: "input-group" },
                 react_1["default"].createElement("label", { className: "input-label" }, "Upload Image"),
                 react_1["default"].createElement("label", { htmlFor: "file-upload", className: "custom-file-upload" }, "Ch\u1ECDn t\u1EC7p"),
-                react_1["default"].createElement("input", { id: "file-upload", type: "file", accept: "image/*", onChange: handleFileChange, style: {
-                        display: "none"
-                    } }),
-                " ",
+                react_1["default"].createElement("input", { id: "file-upload", type: "file", accept: "image/*", onChange: handleFileChange, style: { display: "none" } }),
                 preview && (react_1["default"].createElement("div", { className: "image-preview" },
                     react_1["default"].createElement("img", { src: preview, alt: "Image Preview" })))),
             react_1["default"].createElement("div", { className: "input-group" },
@@ -237,9 +266,7 @@ function NFTPage() {
             react_1["default"].createElement("div", { className: "input-group" },
                 react_1["default"].createElement("label", { className: "input-label" }, "Description"),
                 react_1["default"].createElement("textarea", { value: description, onChange: function (e) { return setDescription(e.target.value); }, className: "textarea-input", placeholder: "Describe your NFT" })),
-            react_1["default"].createElement("button", { onClick: handleMint, disabled: mintLoading, className: "mint-button" }, mintLoading
-                ? "Minting..."
-                : "Mint NFT"))),
+            react_1["default"].createElement("button", { onClick: handleMint, disabled: mintLoading, className: "mint-button" }, mintLoading ? "Minting..." : "Mint NFT"))),
         activeTab === "update" && (react_1["default"].createElement("div", { className: "card" },
             react_1["default"].createElement("h1", { className: "title" }, "Update Your NFT"),
             react_1["default"].createElement("div", { className: "input-group" },
@@ -257,8 +284,15 @@ function NFTPage() {
             react_1["default"].createElement("div", { className: "input-group" },
                 react_1["default"].createElement("label", { className: "input-label" }, "Extra Metadata"),
                 react_1["default"].createElement("input", { type: "text", value: updateExtra, onChange: function (e) { return setUpdateExtra(e.target.value); }, className: "text-input", placeholder: "Enter extra metadata (optional)" })),
-            react_1["default"].createElement("button", { onClick: handleUpdate, disabled: updateLoading, className: "mint-button" }, updateLoading
-                ? "Updating..."
-                : "Update NFT")))));
+            react_1["default"].createElement("button", { onClick: handleUpdate, disabled: updateLoading, className: "mint-button" }, updateLoading ? "Updating..." : "Update NFT"))),
+        activeTab === "burn" && (react_1["default"].createElement("div", { className: "card" },
+            react_1["default"].createElement("h1", { className: "title" }, "Burn Your NFT"),
+            react_1["default"].createElement("div", { className: "input-group" },
+                react_1["default"].createElement("label", { className: "input-label" }, "Token Name"),
+                react_1["default"].createElement("input", { type: "text", value: burnTokenName, onChange: function (e) { return setBurnTokenName(e.target.value); }, className: "text-input", placeholder: "Enter token name to burn" })),
+            react_1["default"].createElement("div", { className: "input-group" },
+                react_1["default"].createElement("label", { className: "input-label" }, "S\u1ED1 l\u01B0\u1EE3ng"),
+                react_1["default"].createElement("input", { type: "text", value: burnQuantity, onChange: function (e) { return setBurnQuantity(e.target.value); }, className: "text-input", placeholder: "Enter quantity to burn" })),
+            react_1["default"].createElement("button", { onClick: handleBurn, disabled: burnLoading, className: "mint-button" }, burnLoading ? "Burning..." : "Burn NFT")))));
 }
 exports["default"] = NFTPage;

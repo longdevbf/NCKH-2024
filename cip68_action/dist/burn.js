@@ -36,10 +36,10 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 exports.__esModule = true;
-exports.updateTokens = void 0;
+exports.burnTokens = void 0;
 var core_1 = require("@meshsdk/core");
 var lodash_1 = require("lodash");
-var plutus_json_1 = require("../cip68_contract/plutus.json");
+var plutus_json_1 = require("@/cip68_contract/plutus.json");
 var common_1 = require("../cardano/utils/common");
 // Constants
 var APP_WALLET_ADDRESS = "addr_test1qqwkave5e46pelgysvg6mx0st5zhte7gn79srscs8wv2qp5qkfvca3f7kpx3v3rssm4j97f63v5whrj8yvsx6dac9xrqyqqef6";
@@ -83,34 +83,43 @@ function getAddressUTXOAsset(address, unit) {
         });
     });
 }
-//const {wallet, connected} = useWalletContext();
-function updateTokens(wallet, params) {
-    return __awaiter(this, void 0, Promise, function () {
-        var _a, utxos, walletAddress, collateral, userPubKeyHash, exChange, pubkeyExchange, unsignedTx_1, mintCompilecode, storeCompilecode, storeScriptCbor_1, storeScript, storeAddress_1, storeScriptHash, mintScriptCbor, policyId_1, completedTx, signedTx, txHashUpdate, error_1;
+function getAddressUTXOAssets(address, unit) {
+    return __awaiter(this, void 0, void 0, function () {
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0: return [4 /*yield*/, common_1.blockchainProvider.fetchAddressUTxOs(address, unit)];
+                case 1: return [2 /*return*/, _a.sent()];
+            }
+        });
+    });
+}
+;
+function burnTokens(wallet, params) {
+    return __awaiter(this, void 0, void 0, function () {
+        var _a, utxos, walletAddress, collateral, userPubKeyHash, exChange, pubkeyExchange, unsignedTx, mintCompilecode, storeCompilecode, storeScriptCbor, storeScript, storeAddress, storeScriptHash, mintScriptCbor, policyId, completeTx, signTx, txHash;
         var _this = this;
         return __generator(this, function (_b) {
             switch (_b.label) {
-                case 0:
-                    _b.trys.push([0, 6, , 7]);
-                    return [4 /*yield*/, common_1.getWalletInfoForTx(wallet)];
+                case 0: return [4 /*yield*/, common_1.getWalletInfoForTx(wallet)];
                 case 1:
                     _a = _b.sent(), utxos = _a.utxos, walletAddress = _a.walletAddress, collateral = _a.collateral;
                     userPubKeyHash = core_1.deserializeAddress(walletAddress).pubKeyHash;
                     exChange = APP_WALLET_ADDRESS;
                     pubkeyExchange = core_1.deserializeAddress(exChange).pubKeyHash;
-                    unsignedTx_1 = new core_1.MeshTxBuilder({
+                    unsignedTx = new core_1.MeshTxBuilder({
                         fetcher: common_1.blockchainProvider,
-                        submitter: common_1.blockchainProvider
+                        submitter: common_1.blockchainProvider,
+                        verbose: true
                     });
                     mintCompilecode = readValidator("mint.mint.mint");
                     storeCompilecode = readValidator("store.store.spend");
-                    storeScriptCbor_1 = core_1.applyParamsToScript(storeCompilecode, [pubkeyExchange, BigInt(1), userPubKeyHash]);
+                    storeScriptCbor = core_1.applyParamsToScript(storeCompilecode, [pubkeyExchange, BigInt(1), userPubKeyHash]);
                     storeScript = {
-                        code: storeScriptCbor_1,
+                        code: storeScriptCbor,
                         version: "V3"
                     };
-                    storeAddress_1 = core_1.serializeAddressObj(core_1.scriptAddress(core_1.deserializeAddress(core_1.serializePlutusScript(storeScript, undefined, 0, false).address).scriptHash, core_1.deserializeAddress(exChange).stakeCredentialHash, false), 0);
-                    storeScriptHash = core_1.deserializeAddress(storeAddress_1).scriptHash;
+                    storeAddress = core_1.serializeAddressObj(core_1.scriptAddress(core_1.deserializeAddress(core_1.serializePlutusScript(storeScript, undefined, 0, false).address).scriptHash, core_1.deserializeAddress(exChange).stakeCredentialHash, false), 0);
+                    storeScriptHash = core_1.deserializeAddress(storeAddress).scriptHash;
                     mintScriptCbor = core_1.applyParamsToScript(mintCompilecode, [
                         pubkeyExchange,
                         BigInt(1),
@@ -118,80 +127,99 @@ function updateTokens(wallet, params) {
                         core_1.deserializeAddress(exChange).stakeCredentialHash,
                         userPubKeyHash,
                     ]);
-                    policyId_1 = core_1.resolveScriptHash(mintScriptCbor, "V3");
-                    // Process each token update
+                    policyId = core_1.resolveScriptHash(mintScriptCbor, "V3");
                     return [4 /*yield*/, Promise.all(params.map(function (_a) {
-                            var assetName = _a.assetName, metadata = _a.metadata, txHash = _a.txHash;
+                            var assetName = _a.assetName, quantity = _a.quantity, txHash = _a.txHash;
                             return __awaiter(_this, void 0, void 0, function () {
-                                var storeUtxo, _b;
+                                var userUtxos, amount, storeUtxo, _b;
                                 return __generator(this, function (_c) {
                                     switch (_c.label) {
-                                        case 0:
-                                            if (!!lodash_1.isNil(txHash)) return [3 /*break*/, 2];
-                                            return [4 /*yield*/, getUtxoForTx(storeAddress_1, txHash)];
+                                        case 0: return [4 /*yield*/, getAddressUTXOAssets(walletAddress, policyId + core_1.CIP68_222(core_1.stringToHex(assetName)))];
                                         case 1:
+                                            userUtxos = _c.sent();
+                                            amount = userUtxos.reduce(function (amount, utxos) {
+                                                return (amount +
+                                                    utxos.output.amount.reduce(function (amt, utxo) {
+                                                        if (utxo.unit === policyId + core_1.CIP68_222(core_1.stringToHex(assetName))) {
+                                                            return amt + Number(utxo.quantity);
+                                                        }
+                                                        return amt;
+                                                    }, 0));
+                                            }, 0);
+                                            if (!!lodash_1.isNil(txHash)) return [3 /*break*/, 3];
+                                            return [4 /*yield*/, getUtxoForTx(storeAddress, txHash)];
+                                        case 2:
                                             _b = _c.sent();
-                                            return [3 /*break*/, 4];
-                                        case 2: return [4 /*yield*/, getAddressUTXOAsset(storeAddress_1, policyId_1 + core_1.CIP68_100(core_1.stringToHex(assetName)))];
-                                        case 3:
-                                            _b = _c.sent();
-                                            _c.label = 4;
+                                            return [3 /*break*/, 5];
+                                        case 3: return [4 /*yield*/, getAddressUTXOAsset(storeAddress, policyId + core_1.CIP68_100(core_1.stringToHex(assetName)))];
                                         case 4:
+                                            _b = _c.sent();
+                                            _c.label = 5;
+                                        case 5:
                                             storeUtxo = _b;
                                             if (!storeUtxo)
                                                 throw new Error("Store UTXO not found");
-                                            unsignedTx_1
-                                                .spendingPlutusScriptV3()
-                                                .txIn(storeUtxo.input.txHash, storeUtxo.input.outputIndex)
-                                                .txInInlineDatumPresent()
-                                                //.spendingReferenceTxInInlineDatumPresent()
-                                                .txInRedeemerValue(core_1.mConStr0([]))
-                                                .txInScript(storeScriptCbor_1)
-                                                .txOut(storeAddress_1, [
-                                                {
-                                                    unit: policyId_1 + core_1.CIP68_100(core_1.stringToHex(assetName)),
-                                                    quantity: "1"
-                                                }
-                                            ])
-                                                .txOutInlineDatumValue(core_1.metadataToCip68(metadata));
+                                            if (-Number(quantity) === amount) {
+                                                unsignedTx
+                                                    .mintPlutusScriptV3()
+                                                    .mint(quantity, policyId, core_1.CIP68_222(core_1.stringToHex(assetName)))
+                                                    .mintRedeemerValue(core_1.mConStr1([]))
+                                                    .mintingScript(mintScriptCbor)
+                                                    .mintPlutusScriptV3()
+                                                    .mint("-1", policyId, core_1.CIP68_100(core_1.stringToHex(assetName)))
+                                                    .mintRedeemerValue(core_1.mConStr1([]))
+                                                    .mintingScript(mintScriptCbor)
+                                                    .spendingPlutusScriptV3()
+                                                    .txIn(storeUtxo.input.txHash, storeUtxo.input.outputIndex)
+                                                    .txInInlineDatumPresent()
+                                                    .txInRedeemerValue(core_1.mConStr1([]))
+                                                    .txInScript(storeScriptCbor);
+                                            }
+                                            else {
+                                                unsignedTx
+                                                    .mintPlutusScriptV3()
+                                                    .mint(quantity, policyId, core_1.CIP68_222(core_1.stringToHex(assetName)))
+                                                    .mintRedeemerValue(core_1.mConStr1([]))
+                                                    .mintingScript(mintScriptCbor)
+                                                    .txOut(walletAddress, [
+                                                    {
+                                                        unit: policyId + core_1.CIP68_222(core_1.stringToHex(assetName)),
+                                                        quantity: String(amount + Number(quantity))
+                                                    },
+                                                ]);
+                                            }
                                             return [2 /*return*/];
                                     }
                                 });
                             });
                         }))];
                 case 2:
-                    // Process each token update
                     _b.sent();
-                    unsignedTx_1
-                        .txOut(exChange, [
+                    unsignedTx
+                        .txOut(APP_WALLET_ADDRESS, [
                         {
                             unit: "lovelace",
                             quantity: "1000000"
                         },
                     ])
+                        .requiredSignerHash(core_1.deserializeAddress(walletAddress).pubKeyHash)
                         .changeAddress(walletAddress)
-                        .requiredSignerHash(userPubKeyHash)
                         .selectUtxosFrom(utxos)
                         .txInCollateral(collateral.input.txHash, collateral.input.outputIndex, collateral.output.amount, collateral.output.address)
-                        .setNetwork("preprod");
-                    return [4 /*yield*/, unsignedTx_1.complete()];
+                        .setNetwork(appNetwork);
+                    return [4 /*yield*/, unsignedTx.complete()];
                 case 3:
-                    completedTx = _b.sent();
-                    return [4 /*yield*/, wallet.signTx(completedTx, true)];
+                    completeTx = _b.sent();
+                    return [4 /*yield*/, wallet.signTx(completeTx, true)];
                 case 4:
-                    signedTx = _b.sent();
-                    return [4 /*yield*/, wallet.submitTx(signedTx)];
+                    signTx = _b.sent();
+                    return [4 /*yield*/, wallet.submitTx(signTx)];
                 case 5:
-                    txHashUpdate = _b.sent();
-                    return [2 /*return*/, txHashUpdate];
-                case 6:
-                    error_1 = _b.sent();
-                    console.error("Error in updateTokens function:", error_1);
-                    throw error_1;
-                case 7: return [2 /*return*/];
+                    txHash = _b.sent();
+                    return [2 /*return*/, txHash];
             }
         });
     });
 }
-exports.updateTokens = updateTokens;
-exports["default"] = updateTokens;
+exports.burnTokens = burnTokens;
+exports["default"] = burnTokens;
