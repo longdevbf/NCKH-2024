@@ -103,7 +103,7 @@ export default function NFTPage() {
     };
 
     // Handler cho Update NFT
-    const handleUpdate = async() : Promise < void > => {
+    const handleUpdate = async() : Promise<void> => {
         if (!connected) {
             alert("Ví chưa kết nối");
             return;
@@ -114,10 +114,11 @@ export default function NFTPage() {
         }
         setUpdateLoading(true);
         try {
-            const useraddr = await wallet.getChangeAddress();
+            // Fix the address method - use getUsedAddresses instead
+            const addresses = await wallet.getUsedAddresses();
+            const useraddr = addresses.length > 0 ? addresses[0] : '';
             const {pubKeyHash: userPubKeyHash} = deserializeAddress(useraddr);
 
-            // Thêm mặc định các trường name và pk vào metadata
             const metadata = {
                 name: updateTokenName,
                 pk: userPubKeyHash,
@@ -127,12 +128,19 @@ export default function NFTPage() {
                 extra: updateExtra
             };
 
-            const result = await updateTokens(wallet, [
+            // Make sure result is a simple string, not a complex object
+            let result = await updateTokens(wallet, [
                 {
                     assetName: updateTokenName,
                     metadata: metadata
                 }
             ]);
+            
+            // Ensure result is a simple string before using it
+            if (typeof result !== 'string') {
+                result = JSON.stringify(result);
+            }
+            
             alert("Update NFT thành công! TxHash: " + result);
         } catch (error) {
             console.error("Update NFT lỗi:", error);

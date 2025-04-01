@@ -139,7 +139,7 @@ function NFTPage() {
     }); };
     // Handler cho Update NFT
     var handleUpdate = function () { return __awaiter(_this, void 0, Promise, function () {
-        var useraddr, userPubKeyHash, metadata, result, error_2;
+        var addresses, useraddr, userPubKeyHash, metadata, result, error_2;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
@@ -155,9 +155,10 @@ function NFTPage() {
                     _a.label = 1;
                 case 1:
                     _a.trys.push([1, 4, 5, 6]);
-                    return [4 /*yield*/, wallet.getChangeAddress()];
+                    return [4 /*yield*/, wallet.getUsedAddresses()];
                 case 2:
-                    useraddr = _a.sent();
+                    addresses = _a.sent();
+                    useraddr = addresses.length > 0 ? addresses[0] : '';
                     userPubKeyHash = core_1.deserializeAddress(useraddr).pubKeyHash;
                     metadata = {
                         name: updateTokenName,
@@ -175,6 +176,10 @@ function NFTPage() {
                         ])];
                 case 3:
                     result = _a.sent();
+                    // Ensure result is a simple string before using it
+                    if (typeof result !== 'string') {
+                        result = JSON.stringify(result);
+                    }
                     alert("Update NFT thành công! TxHash: " + result);
                     return [3 /*break*/, 6];
                 case 4:

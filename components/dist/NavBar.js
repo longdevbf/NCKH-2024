@@ -51,84 +51,12 @@ var NavBar = function () {
     var _d = react_2.useWallet(), wallet = _d.wallet, connect = _d.connect, disconnect = _d.disconnect;
     var router = router_1.useRouter();
     react_1.useEffect(function () {
-        var fetchWalletData1 = function () { return __awaiter(void 0, void 0, void 0, function () {
-            var address, addresses, addresses, utxos, error_1;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0:
-                        if (!wallet) return [3 /*break*/, 10];
-                        _a.label = 1;
-                    case 1:
-                        _a.trys.push([1, 9, , 10]);
-                        // Log available methods
-                        console.log("Available wallet methods:", Object.keys(wallet));
-                        console.log("Available wallet prototype methods:", Object.getOwnPropertyNames(Object.getPrototypeOf(wallet)));
-                        address = '';
-                        if (!(typeof wallet.getUsedAddresses === 'function')) return [3 /*break*/, 3];
-                        return [4 /*yield*/, wallet.getUsedAddresses()];
-                    case 2:
-                        addresses = (_a.sent())[0];
-                        address = addresses.length > 0 ? addresses[0] : '';
-                        return [3 /*break*/, 7];
-                    case 3:
-                        if (!(typeof wallet.getRewardAddresses === 'function')) return [3 /*break*/, 5];
-                        return [4 /*yield*/, wallet.getRewardAddresses()];
-                    case 4:
-                        addresses = _a.sent();
-                        address = addresses[0] || '';
-                        return [3 /*break*/, 7];
-                    case 5:
-                        if (!(typeof wallet.getChangeAddress() === 'function')) return [3 /*break*/, 7];
-                        return [4 /*yield*/, wallet.getChangeAddress()];
-                    case 6:
-                        address = _a.sent();
-                        _a.label = 7;
-                    case 7: return [4 /*yield*/, wallet.getUtxos()];
-                    case 8:
-                        utxos = _a.sent();
-                        return [3 /*break*/, 10];
-                    case 9:
-                        error_1 = _a.sent();
-                        console.error("Error fetching wallet data:", error_1);
-                        return [3 /*break*/, 10];
-                    case 10: return [2 /*return*/];
-                }
-            });
-        }); };
-        var fetchWalletData = function () { return __awaiter(void 0, void 0, void 0, function () {
-            var address, addresses, error_2;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0:
-                        if (!wallet) return [3 /*break*/, 5];
-                        _a.label = 1;
-                    case 1:
-                        _a.trys.push([1, 4, , 5]);
-                        // Log available methods
-                        console.log("Available wallet methods:", Object.keys(wallet));
-                        console.log("Available wallet prototype methods:", Object.getOwnPropertyNames(Object.getPrototypeOf(wallet)));
-                        address = '';
-                        if (!(typeof wallet.getUsedAddresses === 'function')) return [3 /*break*/, 3];
-                        return [4 /*yield*/, wallet.getUsedAddresses()];
-                    case 2:
-                        addresses = _a.sent();
-                        address = addresses.length > 0 ? addresses[0] : '';
-                        _a.label = 3;
-                    case 3: return [3 /*break*/, 5];
-                    case 4:
-                        error_2 = _a.sent();
-                        console.error("Error fetching wallet data:", error_2);
-                        return [3 /*break*/, 5];
-                    case 5: return [2 /*return*/];
-                }
-            });
-        }); };
         if (wallet) {
             fetchWalletData();
         }
     }, [wallet]);
     var fetchWalletData = function () { return __awaiter(void 0, void 0, void 0, function () {
-        var address, utxos, totalLovelace, balance, error_3;
+        var address, utxos, totalLovelace, balance, error_1;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
@@ -147,8 +75,8 @@ var NavBar = function () {
                     updateUserInfo({ address: address, balance: balance });
                     return [3 /*break*/, 5];
                 case 4:
-                    error_3 = _a.sent();
-                    console.error("Error fetching wallet data:", error_3);
+                    error_1 = _a.sent();
+                    console.error("Error fetching wallet data:", error_1);
                     return [3 /*break*/, 5];
                 case 5: return [2 /*return*/];
             }
