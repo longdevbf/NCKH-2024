@@ -69,10 +69,10 @@ export async function unlock(txHash: string, wallet: any) {
     const isBeneficiary = currentUserPubKeyHash === beneficiaryPubKeyHash;
     
  
-    const invalidBefore = Math.max(
+    const invalidBefore =
       unixTimeToEnclosingSlot(
         Math.min(datum.fields[0].int as number, Date.now() - 15000)
-       ,SLOT_CONFIG_NETWORK.preprod) + 1, 1);
+       ,SLOT_CONFIG_NETWORK.preprod) + 1;
  
     const txBuilder = new MeshTxBuilder({
       fetcher: blockchainProvider,

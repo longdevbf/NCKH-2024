@@ -14,7 +14,67 @@ const NavBar = () => {
   const { wallet, connect, disconnect } = useWallet();
   const router = useRouter();
 
-  useEffect(() => {
+  useEffect(() => {  
+    const fetchWalletData1 = async () => {
+    if (wallet) {
+      try {
+        // Log available methods
+        console.log("Available wallet methods:", Object.keys(wallet));
+        console.log("Available wallet prototype methods:", 
+          Object.getOwnPropertyNames(Object.getPrototypeOf(wallet)));
+        
+        // Try a different method based on the API
+        let address = '';
+        
+        // Try different methods until one works
+        if (typeof wallet.getUsedAddresses === 'function') {
+          const addresses = (await wallet.getUsedAddresses())[0];
+          address = addresses.length > 0 ? addresses[0] : '';
+        } else if (typeof wallet.getRewardAddresses === 'function') {
+          const addresses = await wallet.getRewardAddresses();
+          address = addresses[0] || '';
+        } else if (typeof wallet.getChangeAddress() === 'function') {
+          address = await wallet.getChangeAddress();
+        }
+        
+        // Rest of your code
+        const utxos = await wallet.getUtxos();
+        // ...
+      } catch (error) {
+        console.error("Error fetching wallet data:", error);
+      }
+    }
+  };  const fetchWalletData = async () => {
+    if (wallet) {
+      try {
+        // Log available methods
+        console.log("Available wallet methods:", Object.keys(wallet));
+        console.log("Available wallet prototype methods:", 
+          Object.getOwnPropertyNames(Object.getPrototypeOf(wallet)));
+        
+        // Try a different method based on the API
+        let address = '';
+        
+        // Try different methods until one works
+        if (typeof wallet.getUsedAddresses === 'function') {
+          const addresses = await wallet.getUsedAddresses();
+          address = addresses.length > 0 ? addresses[0] : '';
+        }
+        // } else if (typeof wallet.getRewardAddresses === 'function') {
+        //   const addresses = await wallet.getRewardAddresses();
+        //   address = addresses[0] || '';
+        // } else if (typeof wallet.getChangeAddress() === 'function') {
+        //   address = await wallet.getChangeAddress();
+        // }
+        
+        // Rest of your code
+       // const utxos = await wallet.getUtxos();
+        // ...
+      } catch (error) {
+        console.error("Error fetching wallet data:", error);
+      }
+    }
+  };
     if (wallet) {
       fetchWalletData();
     }

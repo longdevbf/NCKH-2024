@@ -282,7 +282,7 @@ p {
     background-color: #4CAF50;
     border: 2px solid #fff;
     right: 13.5%;
-    transform: translate(-0.2vw, 300%);
+    transform: translate(-0.1vw, 345%);
 }
 
 .transaction-item__check {

@@ -18,7 +18,7 @@ import {
   import { isEmpty, isNil } from "lodash";
   import plutus from '../cip68_contract/plutus.json';
   import { getWalletInfoForTx, blockchainProvider } from '../cardano/utils/common';
-  
+  import { useWalletContext } from "@/pages";
   // Constants
   const APP_WALLET_ADDRESS = "addr_test1qqwkave5e46pelgysvg6mx0st5zhte7gn79srscs8wv2qp5qkfvca3f7kpx3v3rssm4j97f63v5whrj8yvsx6dac9xrqyqqef6";
   const appNetwork = "preprod";
@@ -149,34 +149,33 @@ import {
 
     return txHashUpdate;
   }
-  
-export default updateTokens;
-//   async function main() {
-//     try {
-//       const {utxos, walletAddress, collateral} = await getWalletInfoForTx(wallet);
-//       const { pubKeyHash: userPubKeyHash } = deserializeAddress(walletAddress);
-//       const exChange = APP_WALLET_ADDRESS;
-//       const pubkeyExchange = deserializeAddress(exChange).pubKeyHash;
-//       const result = await updateTokens([
-//         {
-//           assetName: "Portfolio",
-//           metadata:  {
-//             _pk: userPubKeyHash,
-//             check: userPubKeyHash,
-//             image: "ipfs://bafkreideqzlxt33hejgqhldmgzpkyy7d2fsfye5hb2vafn3ysyv6zuzwre",
-//             mediaType: "image/jpg",
-//             canbenh: "ung thu",
-//             test: "da update lan nua",
+  export default updateTokens;
+
+  // async function main() {
+  //   try {
+  //     const {wall}
+  //     const {utxos, walletAddress, collateral} = await getWalletInfoForTx(wallet);
+  //     const { pubKeyHash: userPubKeyHash } = deserializeAddress(walletAddress);
+  //     const exChange = APP_WALLET_ADDRESS;
+  //     const pubkeyExchange = deserializeAddress(exChange).pubKeyHash;
+  //     const result = await updateTokens([
+  //       wallet,
+  //       {
+  //         assetName: "graph",
+  //         metadata:  {
+  //           _pk: userPubKeyHash,
+  //           canbenh: "ung thu",
+  //           test: "da update lan nua",
            
-//           }
-//         }
-//       ]);
+  //         }
+  //       }
+  //     ]);
       
-//       console.log("Transaction hash:", result);
-//     } catch (error) {
-//       console.error("Error updating tokens:", error);
-//     }
-//   }
+  //     console.log("Transaction hash:", result);
+  //   } catch (error) {
+  //     console.error("Error updating tokens:", error);
+  //   }
+  // }
   
-//   // Run the function
-//   main();
+  // // Run the function
+  // main();

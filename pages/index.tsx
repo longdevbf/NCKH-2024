@@ -150,7 +150,7 @@ const Home: NextPage = () => {
           </div>
         </div>
         <div className="wallet-balance" onClick={handleWalletBalanceClick}>
-         {/* <span>Wallet Balance</span> */}
+          <span>Wallet Balance</span>
         </div>
         {showWalletInfo && wallet && (
           <div className="wallet-info">
