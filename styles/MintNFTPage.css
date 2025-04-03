@@ -28,7 +28,7 @@ body {
   border-radius: 12px;
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
   width: 100%;
-  margin-top: 80px;
+  margin-top: 40px;
   margin-bottom: 20px;
   
   border-color: #176fe2;
@@ -185,6 +185,26 @@ body {
   height: auto;
   border-radius: 8px;
   box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
+}
+
+/* New styles for professional file upload dropzone */
+.file-dropzone {
+  border: 2px dashed #ccc;
+  padding: 20px;
+  text-align: center;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.3s;
+  color: #666;
+}
+
+.file-dropzone:hover {
+  background-color: #f0f0f0;
+}
+
+.dropzone-preview {
+  max-width: 100%;
+  border-radius: 8px;
 }
 
 /* Responsive Design */

@@ -11,7 +11,9 @@ export default function NFTPage() {
   const { wallet, connected } = useWalletContext();
 
   // State cho tab (mặc định là mint)
-  const [activeTab, setActiveTab] = useState<"mint" | "update" | "burn">("mint");
+  const [activeTab, setActiveTab] = useState<"mint" | "update" | "burn">(
+    "mint"
+  );
 
   // States cho Mint NFT
   const [file, setFile] = useState<File | null>(null);
@@ -45,7 +47,10 @@ export default function NFTPage() {
     "lYTFiYmM5MjZkODIzOTJjZTcxODYyOWZjMmMwZWZjOTBjMWRiYjAxYTljN2IzIiwiZXhwIjoxNzc0NTI" +
     "0MTMyfQ.IokET3UfMOUUe9EQaZ6y7iNOnJdKdu0rbzxeO0PKTSc";
   const pinataGateway = "emerald-managing-koala-687.mypinata.cloud";
-  const pinata = new PinataSDK({ pinataJwt: JWT, pinataGateway: pinataGateway });
+  const pinata = new PinataSDK({
+    pinataJwt: JWT,
+    pinataGateway: pinataGateway,
+  });
 
   // Xử lý file upload cho Mint NFT
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
@@ -100,8 +105,15 @@ export default function NFTPage() {
       alert("Ví chưa kết nối");
       return;
     }
-    if (!updateTokenName || !updateDescription || !updateImage || !updateMediaType) {
-      alert("Vui lòng nhập đầy đủ Token Name, Description, Image (IPFS) và Media Type");
+    if (
+      !updateTokenName ||
+      !updateDescription ||
+      !updateImage ||
+      !updateMediaType
+    ) {
+      alert(
+        "Vui lòng nhập đầy đủ Token Name, Description, Image (IPFS) và Media Type"
+      );
       return;
     }
     setUpdateLoading(true);
@@ -161,40 +173,81 @@ export default function NFTPage() {
   return (
     <div className="page-container" style={{ paddingTop: "5rem" }}>
       {/* Thanh chuyển tab với margin-bottom để tránh header che */}
-      <div style={{ display: "flex", gap: "1rem", marginBottom: "2rem" }}>
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          gap: "1.5rem",
+          marginBottom: "2rem",
+          marginTop: "30px",
+        }}
+      >
         <button
           onClick={() => setActiveTab("mint")}
           style={{
-            padding: "0.5rem 1rem",
+            padding: "1rem 2rem", // Tăng kích thước nút
+            fontSize: "1.2rem", // Chữ to hơn
+            fontWeight: "bold",
             backgroundColor: activeTab === "mint" ? "#0070f3" : "#ccc",
             color: "#fff",
             border: "none",
+            borderRadius: "8px",
             cursor: "pointer",
+            transition: "all 0.2s ease-in-out",
           }}
+          onMouseOver={(e) => (e.target.style.transform = "scale(1.1)")}
+          onMouseOut={(e) => (e.target.style.transform = "scale(1)")}
+          onMouseDown={(e) => (e.target.style.backgroundColor = "#0056b3")}
+          onMouseUp={(e) =>
+            (e.target.style.backgroundColor =
+              activeTab === "mint" ? "#0070f3" : "#ccc")
+          }
         >
           Mint NFT
         </button>
         <button
           onClick={() => setActiveTab("update")}
           style={{
-            padding: "0.5rem 1rem",
+            padding: "1rem 2rem", // Tăng kích thước nút
+            fontSize: "1.2rem", // Chữ to hơn
+            fontWeight: "bold",
             backgroundColor: activeTab === "update" ? "#0070f3" : "#ccc",
             color: "#fff",
             border: "none",
+            borderRadius: "8px",
             cursor: "pointer",
+            transition: "all 0.2s ease-in-out",
           }}
+          onMouseOver={(e) => (e.target.style.transform = "scale(1.1)")}
+          onMouseOut={(e) => (e.target.style.transform = "scale(1)")}
+          onMouseDown={(e) => (e.target.style.backgroundColor = "#0056b3")}
+          onMouseUp={(e) =>
+            (e.target.style.backgroundColor =
+              activeTab === "update" ? "#0070f3" : "#ccc")
+          }
         >
           Update NFT
         </button>
         <button
           onClick={() => setActiveTab("burn")}
           style={{
-            padding: "0.5rem 1rem",
+            padding: "1rem 2rem", // Tăng kích thước nút
+            fontSize: "1.2rem", // Chữ to hơn
+            fontWeight: "bold",
             backgroundColor: activeTab === "burn" ? "#0070f3" : "#ccc",
             color: "#fff",
             border: "none",
+            borderRadius: "8px",
             cursor: "pointer",
+            transition: "all 0.2s ease-in-out",
           }}
+          onMouseOver={(e) => (e.target.style.transform = "scale(1.1)")}
+          onMouseOut={(e) => (e.target.style.transform = "scale(1)")}
+          onMouseDown={(e) => (e.target.style.backgroundColor = "#0056b3")}
+          onMouseUp={(e) =>
+            (e.target.style.backgroundColor =
+              activeTab === "burn" ? "#0070f3" : "#ccc")
+          }
         >
           Burn NFT
         </button>
@@ -206,9 +259,29 @@ export default function NFTPage() {
           {/* File Upload */}
           <div className="input-group">
             <label className="input-label">Upload Image</label>
-            <label htmlFor="file-upload" className="custom-file-upload">
-              Chọn tệp
-            </label>
+            <div
+              className="file-dropzone"
+              onClick={() => document.getElementById("file-upload")?.click()}
+              onDragOver={(e) => e.preventDefault()}
+              onDrop={(e) => {
+                e.preventDefault();
+                if (e.dataTransfer.files && e.dataTransfer.files.length > 0) {
+                  handleFileChange({
+                    target: { files: e.dataTransfer.files },
+                  } as React.ChangeEvent<HTMLInputElement>);
+                }
+              }}
+            >
+              {preview ? (
+                <img
+                  src={preview}
+                  alt="Image Preview"
+                  className="dropzone-preview"
+                />
+              ) : (
+                <p>Drag &amp; drop image here or click to select</p>
+              )}
+            </div>
             <input
               id="file-upload"
               type="file"
@@ -216,11 +289,6 @@ export default function NFTPage() {
               onChange={handleFileChange}
               style={{ display: "none" }}
             />
-            {preview && (
-              <div className="image-preview">
-                <img src={preview} alt="Image Preview" />
-              </div>
-            )}
           </div>
           {/* Title Input */}
           <div className="input-group">
@@ -243,7 +311,11 @@ export default function NFTPage() {
               placeholder="Describe your NFT"
             />
           </div>
-          <button onClick={handleMint} disabled={mintLoading} className="mint-button">
+          <button
+            onClick={handleMint}
+            disabled={mintLoading}
+            className="mint-button"
+          >
             {mintLoading ? "Minting..." : "Mint NFT"}
           </button>
         </div>
@@ -306,7 +378,11 @@ export default function NFTPage() {
               placeholder="Enter extra metadata (optional)"
             />
           </div>
-          <button onClick={handleUpdate} disabled={updateLoading} className="mint-button">
+          <button
+            onClick={handleUpdate}
+            disabled={updateLoading}
+            className="mint-button"
+          >
             {updateLoading ? "Updating..." : "Update NFT"}
           </button>
         </div>
@@ -337,7 +413,11 @@ export default function NFTPage() {
               placeholder="Enter quantity to burn"
             />
           </div>
-          <button onClick={handleBurn} disabled={burnLoading} className="mint-button">
+          <button
+            onClick={handleBurn}
+            disabled={burnLoading}
+            className="mint-button"
+          >
             {burnLoading ? "Burning..." : "Burn NFT"}
           </button>
         </div>
