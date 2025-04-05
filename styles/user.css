@@ -33,20 +33,6 @@
   gap: 13rem;
 }
 
-.dashboard__button {
-  padding: 10px 20px;
-  background: #007bff;
-  color: white;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  width: 150px;
-  text-align: center;
-}
-
-.dashboard__button:hover {
-  background: #0056b3;
-}
 
 .dashboard__info {
   margin-top: 20px;
@@ -59,4 +45,107 @@
 }
 .dashboard__info-item{
   margin-bottom: 20px;
+}
+
+.dashboard {
+  padding: 10px;
+  font-family: sans-serif;
+}
+
+.dashboard__content {
+  display: flex;
+  align-items: flex-start;
+  margin-bottom: 15px;
+  border-bottom: 1px solid #eee;
+  padding-bottom: 15px;
+}
+
+.dashboard__avatar {
+  margin-right: 10px;
+}
+
+.dashboard__avatar-link {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.dashboard__info {
+  flex-grow: 1;
+}
+
+.dashboard__info-item {
+  margin: 3px 0;
+  display: flex;
+  align-items: center;
+  font-size: 12px;
+}
+
+.dashboard__copy-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  margin-left: 3px;
+  font-size: 14px;
+  color: #007bff;
+}
+
+.dashboard__activities {
+  margin-top: 15px;
+}
+
+.dashboard__activities-title {
+  font-size: 16px;
+  margin-bottom: 8px;
+}
+
+.dashboard__activities-list {
+  list-style: none;
+  padding: 0;
+}
+
+.dashboard__activities-item {
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  margin-bottom: 8px;
+  padding: 8px;
+  background-color: #f9f9f9;
+}
+
+.dashboard__activity-summary {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 6px;
+  font-size: 11px;
+ 
+}
+
+.dashboard__activity-details {
+  font-size: 9px; /* Giảm kích thước chữ */
+  background-color: #f0f0f0;
+  padding: 4px; /* Giảm padding */
+  border-radius: 5px;
+  margin-top: 4px; /* Giảm margin top */
+  line-height: 1.2; /* Giảm khoảng cách dòng */
+}
+
+.dashboard__activity-details p {
+  margin: 2px 0; /* Giảm margin của từng phần tử p */
+}
+
+.dashboard__toggle-btn {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 4px 8px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 10px;
+}
+
+
+.dashboard__activity-summary p{
+  margin-bottom: 2rem;
 }

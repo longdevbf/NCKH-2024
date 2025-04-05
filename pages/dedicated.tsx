@@ -11,8 +11,9 @@ const saveActivity = (
   type: 'lock' | 'unlock',
   walletAddress: string,
   timestamp: string,
+  timeLock: Date | string,  // Cho phép Date hoặc chuỗi
   txHash?: string,
-  getAdress  ?: string 
+  getAddress?: string 
 ) => {
   const activities = JSON.parse(localStorage.getItem('activities') || '[]');
 
@@ -20,13 +21,15 @@ const saveActivity = (
     type,
     walletAddress,
     timestamp,
-     txHash,
-    getAdress, 
+    timeLock: typeof timeLock === "string" ? timeLock : timeLock.toISOString(), // ✅ Chuyển về ISO string
+    txHash,
+    getAddress, 
   };
 
   activities.unshift(newActivity);
   localStorage.setItem('activities', JSON.stringify(activities));
 };
+
 
 const DedicatedPage = () => {
   // State để kiểm soát hiển thị tab nào (Lock hoặc Unlock)
@@ -155,7 +158,7 @@ const LockProperty = () => {
       setTransactionSuccess(false); // Reset trạng thái giao dịch thành công
       
       const lockUntilTimeStamp = lockUntil.getTime(); // Chuyển đổi thành timestamp (seconds)
-      
+      const timeLock = new Date(lockUntilTimeStamp).toISOString();
       // Tạo danh sách assets bắt đầu với ADA
       const assets = [{ unit: "lovelace", quantity: parseFloat(amount).toString() }];
       
@@ -177,7 +180,7 @@ const LockProperty = () => {
       
       const walletAddress = (await wallet.getUsedAddresses())[0];
       const timestamp = new Date().toISOString();
-      saveActivity('lock', walletAddress, timestamp,resultTxHash,address);
+      saveActivity('lock', walletAddress, timestamp,timeLock,resultTxHash,address);
       // Hiển thị thông báo thành công nhưng không xóa dữ liệu
       alert("Assets locked successfully!");
       
